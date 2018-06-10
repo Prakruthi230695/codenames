@@ -6,6 +6,8 @@ import green from '@material-ui/core/colors/green';
 import purple from '@material-ui/core/colors/purple';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import TurnIndicator from './TurnIndicator/TurnIndicator';
+
 import './App.css';
 import logo from './logo.svg';
 
@@ -30,6 +32,7 @@ class App extends React.Component {
           <p className="App-intro">
             To get started, edit <code>src/App.tsx</code> and save to reload.
           </p>
+        <TurnIndicator turn={'red'} winner={''} />
         </div>
       </MuiThemeProvider>
     );
