@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
-import Typography from '@material-ui/core/Typography';
 import { WithStyles } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 
@@ -21,7 +21,7 @@ interface Props extends WithStyles<typeof styles> {
   winner: '' | 'red' | 'blue',
 }
 
-const TurnIndicator = withStyles(styles)((props: Props) => {
+const TurnIndicator: React.SFC<Props> = (props: Props) => {
   const { turn, winner, classes } = props;
   const color: string = winner || turn;
   let text: string;
@@ -41,6 +41,6 @@ const TurnIndicator = withStyles(styles)((props: Props) => {
       {text}
     </Typography>
   )
-})
+}
 
-export default TurnIndicator;
+export default withStyles(styles)(TurnIndicator);
