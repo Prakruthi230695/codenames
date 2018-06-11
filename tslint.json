@@ -4,7 +4,10 @@
   "rules": {
     "interface-name": [true, "never-prefix"],
     "interface-over-type-literal": false,
-    "jsx-boolean-value": [true, "never"]
+    "jsx-boolean-value": [true, "never"],
+    "ordered-imports": [
+      false
+    ]
   },
   "linterOptions": {
     "exclude": [
