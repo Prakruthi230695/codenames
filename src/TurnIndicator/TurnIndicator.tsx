@@ -4,15 +4,13 @@ import { createStyles, withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { WithStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import blue from '@material-ui/core/colors/blue';
-import red from '@material-ui/core/colors/red';
 
 const styles = (theme: Theme) => createStyles({
   blue: {
-    color: blue[500]
+    color: theme.palette.secondary.main
   },
   red: {
-    color: red[500]
+    color: theme.palette.primary.main
   }
 });
 
