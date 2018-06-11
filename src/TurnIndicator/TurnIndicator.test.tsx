@@ -22,7 +22,8 @@ const setup = (propOverrides?: PropOverrides) => {
     winner: ''
   }, propOverrides);
 
-  let shallow = createShallow({untilSelector: 'TurnIndicator'}); // b/c withStyles HOC
+  // NB: I'll have to change the untiSelector (another arg?) if testing other stuff
+  const shallow = createShallow({untilSelector: 'Typography'});
   const wrapper = shallow(<TurnIndicator {...props} />);
   return wrapper;
 };
@@ -40,6 +41,6 @@ it('displays the team\'s turn', () => {
 });
 
 it('displays when a team has won', () => {
-  let wrapper = setup({winner: 'red'});
+  const wrapper = setup({winner: 'red'});
   expect(wrapper.text().toLowerCase()).toMatch(/w[io]n/);
 });
