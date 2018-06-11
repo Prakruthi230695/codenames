@@ -2,8 +2,9 @@ import * as React from 'react';
 
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
-import green from '@material-ui/core/colors/green';
-import purple from '@material-ui/core/colors/purple';
+import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import TurnIndicator from './TurnIndicator/TurnIndicator';
@@ -13,9 +14,9 @@ import logo from './logo.svg';
 
 
 const theme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: green
+  teamPalette: {
+    blue,
+    red
   }
 });
 
