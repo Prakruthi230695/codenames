@@ -9,11 +9,13 @@ import EndTurnButton from './EndTurnButton';
 
 
 type Props = {
+  winner: boolean,
   endTurnHandler: jest.Mock
 }
 
 const setup = () => {
   const props: Props = {
+    winner: false,
     endTurnHandler: jest.fn()
   };
 
@@ -29,8 +31,15 @@ it('renders without crashing', () => {
 
 it('calls endTurnHandler on onClick', () => {
   const spy = jest.fn();
-  const wrapper = shallow(<EndTurnButton endTurnHandler={spy}/>);
+  const wrapper = shallow(<EndTurnButton endTurnHandler={spy} winner={false}/>);
   const btn = wrapper.find(Button).first();
   btn.simulate('click');
   expect(spy).toHaveBeenCalled();
 });
+
+it('is disabled if game is over', () => {
+  const spy = jest.fn();
+  const wrapper = shallow(<EndTurnButton endTurnHandler={spy} winner/>);
+  const btn = wrapper.find(Button).first();
+  expect(btn.props().disabled).toBeTruthy();
+})
