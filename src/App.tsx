@@ -6,8 +6,6 @@ import red from '@material-ui/core/colors/red';
 import blue from '@material-ui/core/colors/blue';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import TurnIndicator from './TurnIndicator/TurnIndicator';
-
 
 const theme = createMuiTheme({
   palette: {
@@ -21,7 +19,6 @@ class App extends React.Component {
     return (
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <TurnIndicator turn={'red'} winner={''} />
       </MuiThemeProvider>
     );
   }
