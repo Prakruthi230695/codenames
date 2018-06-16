@@ -5,6 +5,7 @@
     "interface-name": [true, "never-prefix"],
     "interface-over-type-literal": false,
     "jsx-boolean-value": [true, "never"],
+    "member-access": false,
     "ordered-imports": [
       false
     ]
