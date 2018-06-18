@@ -107,6 +107,9 @@ class WordTile extends React.Component<Props, State> {
     }
   }
 
+  /* The following two generate...() methods are to navigate the myriad
+   * coloring options available for a tile.
+   */
   generatePaperColorClass(): string {
     const { groupedWord, playerType } = this.props;
     const { guessed } = this.state;
