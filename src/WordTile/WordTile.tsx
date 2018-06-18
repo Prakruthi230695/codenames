@@ -10,21 +10,22 @@ import Paper from '@material-ui/core/Paper';
 
 
 enum ClassNames {
-  TextGuessedNonNeutral = "textGuessedNonNeutral",
+  TextGuessed = "textGuessed",
   TextSpymasterUnguessedRed = "textSpymasterUnguessedRed",
   TextSpymasterUnguessedBlue = "textSpymasterUnguessedBlue",
   TextDefault = "textDefault",
+
   PaperSpymasterUnguessedDeath = "paperSpymasterUnguessedDeath",
   PaperGuessedRed = "paperGuessedRed",
   PaperGuessedBlue = "paperGuessedBlue",
   PaperGuessedDeath = "paperGuessedDeath",
   PaperGuessedNeutral = "paperGuessedNeutral",
-  PaperDefault = "paperDefault"
+  PaperDefault = "paperDefault",
 }
 
 const styles = (theme: Theme) => createStyles({
   [ClassNames.TextDefault]: {},
-  [ClassNames.TextGuessedNonNeutral]: {
+  [ClassNames.TextGuessed]: {
     color: theme.palette.common.white,
   },
   [ClassNames.TextSpymasterUnguessedRed]: {
@@ -35,7 +36,7 @@ const styles = (theme: Theme) => createStyles({
   },
 
   [ClassNames.PaperDefault]: {
-    backgroundColor: theme.palette.grey.A100,
+    backgroundColor: theme.palette.grey[300],
   },
   [ClassNames.PaperSpymasterUnguessedDeath]: {
     backgroundColor: theme.palette.grey.A700,
@@ -47,16 +48,28 @@ const styles = (theme: Theme) => createStyles({
     backgroundColor: theme.palette.secondary.dark,
   },
   [ClassNames.PaperGuessedNeutral]: {
-    backgroundColor: theme.palette.grey.A400,
+    backgroundColor: theme.palette.grey[600],
   },
   [ClassNames.PaperGuessedDeath]: {
     backgroundColor: theme.palette.common.black,
   },
 
-  paperPositioning: {
+  textLayout: {
+    wordBreak: 'break-all',
+    padding: 5
+  },
+
+  paperLayout: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    width: 120,
+    height: 80
+  },
+
+  gridListTile: {
+    width: 120,
+    height: 80
   }
 });
 
@@ -94,7 +107,7 @@ class WordTile extends React.Component<Props, State> {
     }
   }
 
-  generatePaperColorClass(): ClassNames {
+  generatePaperColorClass(): string {
     const { groupedWord, playerType } = this.props;
     const { guessed } = this.state;
 
@@ -115,14 +128,12 @@ class WordTile extends React.Component<Props, State> {
     }
   }
 
-  generateTextColorClass(): ClassNames {
+  generateTextColorClass(): string {
     const { groupedWord, playerType } = this.props;
     const { guessed } = this.state;
 
     if (guessed) {
-      if (groupedWord.group !== "neutral") {
-        return ClassNames.TextGuessedNonNeutral;
-      }
+        return ClassNames.TextGuessed;
     } else if (playerType === "spymaster") {
       if (groupedWord.group === "red") {
         return ClassNames.TextSpymasterUnguessedRed;
@@ -136,18 +147,26 @@ class WordTile extends React.Component<Props, State> {
   render() {
     const { groupedWord, classes } = this.props;
 
-    const paperColorClassKey: ClassNames = this.generatePaperColorClass();
-    const paperColorClass: string = classes[paperColorClassKey];  // as string?
-    const paperPositioningClass: string = classes["paperPositioning"];
-    const paperClasses: string = paperColorClass + " " + paperPositioningClass;
+    // Do I want this / the generate...() methods typed as ClassNames?
+    const paperColorClassKey: string = this.generatePaperColorClass();
+    const paperColorClass: string = classes[paperColorClassKey];
+    const paperClasses: string = paperColorClass + " " + classes.paperLayout;
 
-    const textColorClassKey: ClassNames = this.generateTextColorClass();
+    const textColorClassKey: string = this.generateTextColorClass();
     const textColorClass: string = classes[textColorClassKey];
+    const textClasses: string = textColorClass + " " + classes.textLayout;
 
     return (
-      <GridListTile onClick={this.handleClick}>
+      <GridListTile
+        onClick={this.handleClick}
+        className={classes.gridListTile}
+      >
         <Paper className={paperClasses}>
-          <Typography className={textColorClass}>
+          <Typography
+            className={textClasses}
+            variant={"button"}
+            align={"center"}
+          >
             {groupedWord.word}
           </Typography>
         </Paper>
