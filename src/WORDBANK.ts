@@ -1,0 +1,31 @@
+/** All the words to grab from for grid population. */
+const WORDBANK: string[] = [
+  "mouse",
+  "spring",
+  "box",
+  "water",
+  "book",
+  "monitor",
+  "wall",
+  "bell",
+  "wick",
+  "roll",
+  "window",
+  "ball",
+  "drum",
+  "rush",
+  "nut",
+  "oil",
+  "diamond",
+  "stream",
+  "socket",
+  "bread",
+  "pound",
+  "mace",
+  "cord",
+  "Nile",
+  "pyramid",
+  "Mongolia",
+]
+
+export default WORDBANK;
