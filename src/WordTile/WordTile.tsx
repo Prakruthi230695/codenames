@@ -4,7 +4,6 @@ import { createStyles, withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { WithStyles } from '@material-ui/core';
 
-import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
@@ -63,11 +62,6 @@ const styles = (theme: Theme) => createStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 120,
-    height: 80
-  },
-
-  gridListTile: {
     width: 120,
     height: 80
   }
@@ -160,20 +154,18 @@ class WordTile extends React.Component<Props, State> {
     const textClasses: string = textColorClass + " " + classes.textLayout;
 
     return (
-      <GridListTile
+      <Paper
+        className={paperClasses}
         onClick={this.handleClick}
-        className={classes.gridListTile}
-      >
-        <Paper className={paperClasses}>
-          <Typography
-            className={textClasses}
-            variant={"button"}
-            align={"center"}
-          >
-            {groupedWord.word}
-          </Typography>
-        </Paper>
-      </GridListTile>
+        >
+        <Typography
+          className={textClasses}
+          variant={"button"}
+          align={"center"}
+        >
+          {groupedWord.word}
+        </Typography>
+      </Paper>
     )
   }
 }

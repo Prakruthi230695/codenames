@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { createShallow } from '@material-ui/core/test-utils';
 
-import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
 
 import WordTile from './WordTile';
 
@@ -42,7 +42,7 @@ it('displays the word', () => {
 
 it('is marked as guessed on click', () => {
   const wrapper = setup();
-  const tile = wrapper.find(GridListTile);
+  const tile = wrapper.find(Paper);
   tile.simulate('click');
   expect(wrapper.state().guessed).toBeTruthy();
   tile.simulate('click');
@@ -52,7 +52,7 @@ it('is marked as guessed on click', () => {
 it('calls handleGuess on click', () => {
   const spy = jest.fn();
   const wrapper = setup({handleGuess: spy});
-  const tile = wrapper.find(GridListTile);
+  const tile = wrapper.find(Paper);
   tile.simulate('click');
   expect(spy).toHaveBeenCalled();
 });
