@@ -23,6 +23,7 @@ const styles = createStyles({
   }
 });
 
+// Export this so that TileContent can use it in its Props interface.
 export interface GroupedWord {
     word: string,
     group: "red" | "blue" | "neutral" | "death"
