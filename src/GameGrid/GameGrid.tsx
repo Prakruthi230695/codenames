@@ -10,7 +10,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 import { shuffle } from '../utils';
 import WORDBANK from '../WORDBANK';
 
-import WordTile from '../WordTile/WordTile';
+import TileContent from '../TileContent/TileContent';
 
 
 const styles = createStyles({
@@ -80,7 +80,7 @@ class GameGrid extends React.Component<Props, State> {
               key={groupedWord.word}
               className={classes.gridListTile}
             >
-              <WordTile
+              <TileContent
                 groupedWord={groupedWord}
                 playerType={playerType}
                 handleGuess={handleGuess}

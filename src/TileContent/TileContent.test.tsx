@@ -5,7 +5,7 @@ import { createShallow } from '@material-ui/core/test-utils';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import WordTile from './WordTile';
+import TileContent from './TileContent';
 
 interface Props {
   groupedWord: {
@@ -26,8 +26,8 @@ const setup = (propOverrides?: Partial<Props>) => {
     handleGuess: jest.fn()
   }, propOverrides);
 
-  const shallow = createShallow({untilSelector: 'WordTile'});
-  const wrapper = shallow(<WordTile {...props} />);
+  const shallow = createShallow({untilSelector: 'TileContent'});
+  const wrapper = shallow(<TileContent {...props} />);
   return wrapper;
 };
 

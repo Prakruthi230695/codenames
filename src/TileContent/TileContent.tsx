@@ -81,7 +81,7 @@ interface State {
 }
 
 
-class WordTile extends React.Component<Props, State> {
+class TileContent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -170,4 +170,4 @@ class WordTile extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(WordTile);
+export default withStyles(styles)(TileContent);

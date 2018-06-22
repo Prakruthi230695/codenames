@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { createShallow, createMount } from '@material-ui/core/test-utils';
 
-import WordTile from '../WordTile/WordTile';
+import TileContent from '../TileContent/TileContent';
 import GameGrid from './GameGrid';
 
 
@@ -56,9 +56,9 @@ it('produces the right number of words per group', () => {
   expect(expectedGroupCounts).toEqual(groupCounts);
 });
 
-it('passes props to WordTiles', () => {
+it('passes props to TileContents', () => {
   const wrapper = setup();
-  const wordTile = wrapper.find(WordTile).first();
+  const wordTile = wrapper.find(TileContent).first();
   expect(wordTile.props().playerType).toBe(wrapper.props().playerType);
   expect(wordTile.props().handleGuess).toBe(wrapper.props().handleGuess);
   expect(wordTile.props().groupedWord).toBe(wrapper.state().groupedWords[0]);
