@@ -33,7 +33,7 @@ export interface GroupedWord {
 
 interface Props extends WithStyles<typeof styles> {
   playerType: "player" | "spymaster",
-  handleGuess(e: any, tileGroup: Group): void
+  handleGuess(tileGroup: Group): void
 }
 
 interface State {

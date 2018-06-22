@@ -77,7 +77,7 @@ const styles = (theme: Theme) => createStyles({
 interface Props extends WithStyles<typeof styles> {
   groupedWord: GroupedWord,
   playerType: "player" | "spymaster",
-  handleGuess(e: any, tileGroup: Group): void
+  handleGuess(tileGroup: Group): void
 }
 
 interface State {
@@ -101,7 +101,7 @@ class TileContent extends React.Component<Props, State> {
   handleClick(e: any): void {
     if (!this.state.guessed) {
       this.setState({ guessed: true });
-      this.props.handleGuess(e, this.props.groupedWord.group);
+      this.props.handleGuess(this.props.groupedWord.group);
     }
   }
 
