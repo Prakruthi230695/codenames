@@ -15,8 +15,8 @@ import TileContent from '../TileContent/TileContent';
 
 const DIM: number = 5;
 // To set the TileContent Paper size.
-const TILE_WIDTH: number = 120;
-const TILE_HEIGHT: number = 80;
+export const TILE_WIDTH: number = 120;
+export const TILE_HEIGHT: number = 80;
 
 const styles = createStyles({
   grid: {
@@ -29,7 +29,7 @@ const styles = createStyles({
   }
 });
 
-interface GroupedWord {
+export interface GroupedWord {
     word: string,
     group: "red" | "blue" | "neutral" | "death"
 }

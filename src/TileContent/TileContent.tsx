@@ -8,6 +8,8 @@ import purple from '@material-ui/core/colors/purple';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
+import {TILE_WIDTH, TILE_HEIGHT, GroupedWord } from '../GameGrid/GameGrid';
+
 
 enum ClassNames {
   TextGuessed = "textGuessed",
@@ -67,16 +69,13 @@ const styles = (theme: Theme) => createStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 120,
-    height: 80
+    width: TILE_WIDTH,
+    height: TILE_HEIGHT
   }
 });
 
 interface Props extends WithStyles<typeof styles> {
-  groupedWord: {
-    word: string,
-    group: "red" | "blue" | "neutral" | "death"
-  },
+  groupedWord: GroupedWord,
   playerType: "player" | "spymaster",
   handleGuess(e: any): void
 }
