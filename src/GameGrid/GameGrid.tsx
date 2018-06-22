@@ -14,18 +14,12 @@ import TileContent from '../TileContent/TileContent';
 
 
 const DIM: number = 5;
-// To set the TileContent Paper size.
-export const TILE_WIDTH: number = 120;
-export const TILE_HEIGHT: number = 80;
+const TILE_WIDTH: number = 120;
+const TILE_HEIGHT: number = 80;
 
 const styles = createStyles({
   grid: {
     width: (TILE_WIDTH + 4) * DIM,  // 4px is default spacing.
-  },
-
-  gridListTile: {
-    width: TILE_WIDTH,
-    height: TILE_HEIGHT
   }
 });
 
@@ -78,13 +72,12 @@ class GameGrid extends React.Component<Props, State> {
     return (
       <div className={classes.grid}>
         <GridList
-          cellHeight={"auto"}
+          cellHeight={TILE_HEIGHT}
           cols={DIM}
         >
           {groupedWords.map(groupedWord => (
             <GridListTile
               key={groupedWord.word}
-              className={classes.gridListTile}
             >
               <TileContent
                 groupedWord={groupedWord}

@@ -8,7 +8,7 @@ import purple from '@material-ui/core/colors/purple';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import {TILE_WIDTH, TILE_HEIGHT, GroupedWord } from '../GameGrid/GameGrid';
+import { GroupedWord } from '../GameGrid/GameGrid';
 
 
 enum ClassNames {
@@ -69,8 +69,8 @@ const styles = (theme: Theme) => createStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: TILE_WIDTH,
-    height: TILE_HEIGHT
+    width: 'inherit',
+    height: 'inherit'
   }
 });
 
