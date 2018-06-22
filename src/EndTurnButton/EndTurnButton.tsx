@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 
 
 interface Props {
-  winner: boolean,
+  winner: "" | "red" | "blue",
   endTurnHandler(e: React.MouseEvent<HTMLButtonElement>): void
 }
 
