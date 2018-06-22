@@ -8,7 +8,7 @@ import purple from '@material-ui/core/colors/purple';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import { GroupedWord } from '../GameGrid/GameGrid';
+import { Group, GroupedWord } from '../GameGrid/GameGrid';
 
 
 enum ClassNames {
@@ -77,7 +77,7 @@ const styles = (theme: Theme) => createStyles({
 interface Props extends WithStyles<typeof styles> {
   groupedWord: GroupedWord,
   playerType: "player" | "spymaster",
-  handleGuess(e: any, tileGroup: "red" | "blue" | "neutral" | "death"): void
+  handleGuess(e: any, tileGroup: Group): void
 }
 
 interface State {

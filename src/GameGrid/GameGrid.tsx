@@ -23,15 +23,17 @@ const styles = createStyles({
   }
 });
 
-// Export this so that TileContent can use it in its Props interface.
+// Export these so that TileContent can use it in its Props interface
+// and handleClick can use Group type.
+export type Group = "red" | "blue" | "neutral" | "death"
 export interface GroupedWord {
     word: string,
-    group: "red" | "blue" | "neutral" | "death"
+    group: Group
 }
 
 interface Props extends WithStyles<typeof styles> {
   playerType: "player" | "spymaster",
-  handleGuess(e: any, tileGroup: "red" | "blue" | "neutral" | "death"): void
+  handleGuess(e: any, tileGroup: Group): void
 }
 
 interface State {
