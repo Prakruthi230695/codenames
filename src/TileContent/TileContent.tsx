@@ -3,6 +3,7 @@ import * as React from 'react';
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { WithStyles } from '@material-ui/core';
+import purple from '@material-ui/core/colors/purple';
 
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -12,6 +13,7 @@ enum ClassNames {
   TextGuessed = "textGuessed",
   TextSpymasterUnguessedRed = "textSpymasterUnguessedRed",
   TextSpymasterUnguessedBlue = "textSpymasterUnguessedBlue",
+  TextSpymasterUnguessedDeath = "textSpymasterUnguessedDeath",
   TextDefault = "textDefault",
 
   PaperSpymasterUnguessedDeath = "paperSpymasterUnguessedDeath",
@@ -33,12 +35,15 @@ const styles = (theme: Theme) => createStyles({
   [ClassNames.TextSpymasterUnguessedBlue]: {
     color: theme.palette.secondary.main,
   },
+  [ClassNames.TextSpymasterUnguessedDeath]: {
+    color: theme.palette.common.white,
+  },
 
   [ClassNames.PaperDefault]: {
     backgroundColor: theme.palette.grey[300],
   },
   [ClassNames.PaperSpymasterUnguessedDeath]: {
-    backgroundColor: theme.palette.grey.A700,
+    backgroundColor: purple[900],
   },
   [ClassNames.PaperGuessedRed]: {
     backgroundColor: theme.palette.primary.dark,
@@ -136,6 +141,8 @@ class TileContent extends React.Component<Props, State> {
         return ClassNames.TextSpymasterUnguessedRed;
       } else if (groupedWord.group === "blue") {
         return ClassNames.TextSpymasterUnguessedBlue;
+      } else if (groupedWord.group === "death") {
+        return ClassNames.TextSpymasterUnguessedDeath;
       }
     }
     return ClassNames.TextDefault;
