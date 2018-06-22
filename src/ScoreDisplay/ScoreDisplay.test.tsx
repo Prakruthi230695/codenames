@@ -7,14 +7,18 @@ import ScoreDisplay from './ScoreDisplay';
 
 
 type Props = {
-  redRemaining: number,
-  blueRemaining: number,
+  remaining: {
+    red: number,
+    blue: number
+  }
 }
 
 const setup = (propOverrides?: Partial<Props>) => {
   const props: Props = Object.assign({
-    redRemaining: 9,
-    blueRemaining: 8
+    remaining: {
+      red: 9,
+      blue: 8
+    }
   }, propOverrides);
 
   // NB: I'll have to change the untiSelector (another arg?) if testing other stuff

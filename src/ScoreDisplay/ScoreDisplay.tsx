@@ -16,12 +16,14 @@ const styles = createStyles({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  redRemaining: number,
-  blueRemaining: number,
+  remaining: {
+    red: number,
+    blue: number
+  }
 }
 
 const ScoreDisplay: React.SFC<Props> = (props: Props) => {
-  const { redRemaining, blueRemaining, classes } = props;
+  const { remaining, classes } = props;
 
   return (
     <React.Fragment>
@@ -31,7 +33,7 @@ const ScoreDisplay: React.SFC<Props> = (props: Props) => {
         gutterBottom
         variant="headline"
       >
-        {redRemaining}
+        {remaining.red}
       </Typography>
       <Typography
         className={classes.spacer}
@@ -46,7 +48,7 @@ const ScoreDisplay: React.SFC<Props> = (props: Props) => {
         gutterBottom
         variant="headline"
       >
-        {blueRemaining}
+        {remaining.blue}
       </Typography>
     </React.Fragment>
   )
