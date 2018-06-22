@@ -13,14 +13,19 @@ import WORDBANK from '../WORDBANK';
 import TileContent from '../TileContent/TileContent';
 
 
+const DIM: number = 5;
+// To set the TileContent Paper size.
+const TILE_WIDTH: number = 120;
+const TILE_HEIGHT: number = 80;
+
 const styles = createStyles({
   grid: {
-    width: 620
+    width: (TILE_WIDTH + 4) * DIM,  // 4px is default spacing.
   },
 
   gridListTile: {
-    width: 120,
-    height: 80
+    width: TILE_WIDTH,
+    height: TILE_HEIGHT
   }
 });
 
@@ -55,9 +60,10 @@ class GameGrid extends React.Component<Props, State> {
     const groupedWords: GroupedWord[] = [];
 
     for (const word of gameWords) {
+      // TODO: convert magic numbers.
       const group = groupedWords.length < 9  ? "red"     :
-                          groupedWords.length < 17 ? "blue"    :
-                          groupedWords.length < 24 ? "neutral" : "death";
+                    groupedWords.length < 17 ? "blue"    :
+                    groupedWords.length < 24 ? "neutral" : "death";
       const groupedWord: GroupedWord = { word, group };
       groupedWords.push(groupedWord);
     }
@@ -73,7 +79,7 @@ class GameGrid extends React.Component<Props, State> {
       <div className={classes.grid}>
         <GridList
           cellHeight={"auto"}
-          cols={5}
+          cols={DIM}
         >
           {groupedWords.map(groupedWord => (
             <GridListTile
