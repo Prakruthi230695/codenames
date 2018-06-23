@@ -34,18 +34,20 @@ it('renders without crashing', () => {
 it('toggles turns via endTurnHandler', () => {
   const wrapper = setup();
   expect(wrapper.state().turn).toBe("red");
-  wrapper.instance().endTurnHandler();
+  const inst = wrapper.instance() as any;
+  inst.endTurnHandler();
   expect(wrapper.state().turn).toBe("blue");
-  wrapper.instance().endTurnHandler();
+  inst.endTurnHandler();
   expect(wrapper.state().turn).toBe("red");
 });
 
 it('changes player via togglePlayerType', () => {
   const wrapper = setup();
   expect(wrapper.state().playerType).toBe("player");
-  wrapper.instance().togglePlayerType({currentTarget: {value: "spymaster"}});
+  const inst = wrapper.instance() as any;
+  inst.togglePlayerType({currentTarget: {value: "spymaster"}});
   expect(wrapper.state().playerType).toBe("spymaster");
-  wrapper.instance().togglePlayerType({currentTarget: {value: "player"}});
+  inst.togglePlayerType({currentTarget: {value: "player"}});
   expect(wrapper.state().playerType).toBe("player");
 });
 
@@ -53,21 +55,24 @@ it('does not change state if playertype is spymaster', () => {
   const wrapper = setup();
   wrapper.setState({ playerType: "spymaster" });
   const prevState = wrapper.state();
-  wrapper.instance().handleGuess("red");
+  const inst = wrapper.instance() as any;
+  inst.handleGuess("red");
   expect(prevState).toEqual(wrapper.state());
 });
 
 it('the other team wins if death card picked', () => {
   const wrapper = setup();
-  wrapper.instance().handleGuess("death");
+  const inst = wrapper.instance() as any;
+  inst.handleGuess("death");
   expect(wrapper.state().winner).toBe("blue");
 });
 
 it('toggles turn if neutral guessed', () => {
   const wrapper = setup();
-  wrapper.instance().handleGuess("neutral");
+  const inst = wrapper.instance() as any;
+  inst.handleGuess("neutral");
   expect(wrapper.state().turn).toBe("blue");
-  wrapper.instance().handleGuess("neutral");
+  inst.handleGuess("neutral");
   expect(wrapper.state().turn).toBe("red");
 });
 
@@ -75,24 +80,27 @@ it('decrements score on color guess', () => {
   const wrapper = setup();
   const prevRedCount = wrapper.state().remaining.red;
   const prevBlueCount = wrapper.state().remaining.blue;
-  wrapper.instance().handleGuess("red");
+  const inst = wrapper.instance() as any;
+  inst.handleGuess("red");
   expect(wrapper.state().remaining.red).toBe(prevRedCount - 1);
-  wrapper.instance().handleGuess("blue");
+  inst.handleGuess("blue");
   expect(wrapper.state().remaining.blue).toBe(prevBlueCount - 1);
 });
 
 it('switches turn if other team\'s color guessed', () => {
   const wrapper = setup();
-  wrapper.instance().handleGuess("blue");
+  const inst = wrapper.instance() as any;
+  inst.handleGuess("blue");
   expect(wrapper.state().turn).toBe("blue");
-  wrapper.instance().handleGuess("red");
+  inst.handleGuess("red");
   expect(wrapper.state().turn).toBe("red");
 });
 
 it('marks game as won if counter reaches zero', () => {
   const wrapper = setup();
   wrapper.setState({ remaining: {red: 1, blue: 5 }});
-  wrapper.instance().handleGuess("red");
+  const inst = wrapper.instance() as any;
+  inst.handleGuess("red");
   expect(wrapper.state().winner).toBe("red");
 });
 
@@ -106,7 +114,8 @@ it('passes shit to TurnIndicator', () => {
 it('passes shit to PlayerToggle', () => {
   const wrapper = setup();
   const pt = wrapper.find(PlayerToggle);
-  expect(pt.props().togglePlayerType).toBe(wrapper.instance().togglePlayerType);
+  const inst = wrapper.instance() as any;
+  expect(pt.props().togglePlayerType).toBe(inst.togglePlayerType);
 });
 
 it('passes shit to ScoreDisplay', () => {
@@ -118,20 +127,23 @@ it('passes shit to ScoreDisplay', () => {
 it('passes shit to GameGrid', () => {
   const wrapper = setup();
   const gg = wrapper.find(GameGrid);
+  const inst = wrapper.instance() as any;
   expect(gg.props().playerType).toBe(wrapper.state().playerType);
-  expect(gg.props().handleGuess).toBe(wrapper.instance().handleGuess);
+  expect(gg.props().handleGuess).toBe(inst.handleGuess);
 });
 
 it('passes shit to EndTurnButton', () => {
   const wrapper = setup();
   const etb = wrapper.find(EndTurnButton);
+  const inst = wrapper.instance() as any;
   expect(etb.props().winner).toBe(wrapper.state().winner);
-  expect(etb.props().endTurnHandler).toBe(wrapper.instance().endTurnHandler);
+  expect(etb.props().endTurnHandler).toBe(inst.endTurnHandler);
 });
 
 it('passes shit to NewGameWidget', () => {
   const wrapper = setup();
   const ngw = wrapper.find(NewGameWidget);
+  const inst = wrapper.instance() as any;
   expect(ngw.props().winner).toBe(wrapper.state().winner);
-  expect(ngw.props().newGameHandler).toBe(wrapper.instance().props.newGameHandler);
+  expect(ngw.props().newGameHandler).toBe(inst.props.newGameHandler);
 });
