@@ -34,6 +34,7 @@ const TurnIndicator: React.SFC<Props> = (props: Props) => {
     <Typography
       variant={winner ? 'display2' : 'display1'}
       gutterBottom
+      align={"center"}
       className={classes[color]}
     >
       {text}
