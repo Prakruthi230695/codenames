@@ -69,7 +69,11 @@ class NewGameWidget extends React.Component<Props, State> {
           </DialogActions>
         </Dialog>
 
-        <Button onClick={this.checkGameStatus}>
+        <Button
+          onClick={this.checkGameStatus}
+          variant={"contained"}
+          color={"primary"}
+        >
           {"New Game"}
         </Button>
       </React.Fragment>
