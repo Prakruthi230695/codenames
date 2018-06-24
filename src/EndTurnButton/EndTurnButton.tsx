@@ -15,6 +15,8 @@ const EndTurnButton: React.SFC<Props> = (props: Props) => {
     <Button
       onClick={endTurnHandler}
       disabled={!!winner}
+      variant={"contained"}
+      color={"secondary"}
     >
       {'End Turn'}
     </Button>
