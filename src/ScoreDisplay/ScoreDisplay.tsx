@@ -26,18 +26,16 @@ const ScoreDisplay: React.SFC<Props> = (props: Props) => {
   const { remaining, classes } = props;
 
   return (
-    <React.Fragment>
+    <span>
       <Typography
         className={classes.root}
         color="primary"
-        gutterBottom
         variant="headline"
       >
         {remaining.red}
       </Typography>
       <Typography
         className={classes.spacer}
-        gutterBottom
         variant="headline"
       >
         {"·"}
@@ -45,12 +43,11 @@ const ScoreDisplay: React.SFC<Props> = (props: Props) => {
       <Typography
         className={classes.root}
         color="secondary"
-        gutterBottom
         variant="headline"
       >
         {remaining.blue}
       </Typography>
-    </React.Fragment>
+    </span>
   )
 }
 
