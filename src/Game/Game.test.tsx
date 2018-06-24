@@ -21,7 +21,6 @@ const setup = (propOverrides?: Partial<Props>) => {
     newGameHandler: jest.fn()
   }, propOverrides);
 
-  // NB: I'll have to change the untiSelector (another arg?) if testing other stuff
   const shallow = createShallow({untilSelector: 'Game'});
   const wrapper = shallow(<Game {...props} />);
   return wrapper;
@@ -34,7 +33,7 @@ it('renders without crashing', () => {
 it('toggles turns via endTurnHandler', () => {
   const wrapper = setup();
   expect(wrapper.state().turn).toBe("red");
-  const inst = wrapper.instance() as any;
+  const inst = wrapper.instance() as any;  // NB: casting to any circumvents errors.
   inst.endTurnHandler();
   expect(wrapper.state().turn).toBe("blue");
   inst.endTurnHandler();
