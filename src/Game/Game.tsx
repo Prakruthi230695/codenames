@@ -10,11 +10,34 @@ import GameGrid from '../GameGrid/GameGrid';
 import EndTurnButton from '../EndTurnButton/EndTurnButton';
 import NewGameWidget from '../NewGameWidget/NewGameWidget';
 
-import { Group } from '../GameGrid/GameGrid';
+import Paper from '@material-ui/core/Paper';
 
+import { GRID_WIDTH, Group } from '../GameGrid/GameGrid';
+
+
+const PADDING: number = 20;
 
 const styles = createStyles({
-  game: {}
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    padding: PADDING,
+    margin: "20px auto 20px",
+    width: "100%",
+    maxWidth: (GRID_WIDTH + PADDING * 2)
+  },
+  aboveGrid: {
+    marginBottom: 12,
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "space-between"
+  },
+  belowGrid: {
+    marginTop: 12,
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between"
+  }
 });
 
 type PlayerType = "player" | "spymaster";
@@ -95,7 +118,7 @@ class Game extends React.Component<Props, State> {
   }
 
   render() {
-    const { newGameHandler } = this.props;
+    const { newGameHandler, classes } = this.props;
     const {
       playerType,
       turn,
@@ -104,30 +127,34 @@ class Game extends React.Component<Props, State> {
     } = this.state;
 
     return (
-      <React.Fragment>
+      <Paper className={classes.root} >
         <TurnIndicator
           turn={turn}
           winner={winner}
         />
-        <PlayerToggle
-          togglePlayerType={this.togglePlayerType}
-        />
-        <ScoreDisplay
-          remaining={remaining}
-        />
-        <GameGrid
-          playerType={playerType}
-          handleGuess={this.handleGuess}
-        />
-        <EndTurnButton
-          winner={winner}
-          endTurnHandler={this.endTurnHandler}
-        />
-        <NewGameWidget
-          winner={winner}
-          newGameHandler={newGameHandler}
-        />
-      </React.Fragment>
+        <div className={classes.aboveGrid}>
+          <ScoreDisplay
+            remaining={remaining}
+          />
+          <EndTurnButton
+            winner={winner}
+            endTurnHandler={this.endTurnHandler}
+          />
+        </div>
+          <GameGrid
+            playerType={playerType}
+            handleGuess={this.handleGuess}
+          />
+        <div className={classes.belowGrid}>
+          <PlayerToggle
+            togglePlayerType={this.togglePlayerType}
+          />
+          <NewGameWidget
+            winner={winner}
+            newGameHandler={newGameHandler}
+          />
+        </div>
+      </Paper>
     )
   }
 }

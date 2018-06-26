@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import { createShallow } from '@material-ui/core/test-utils';
 
+import Paper from '@material-ui/core/Paper';
+
 import TurnIndicator from '../TurnIndicator/TurnIndicator';
 import PlayerToggle from '../PlayerToggle/PlayerToggle';
 import ScoreDisplay from '../ScoreDisplay/ScoreDisplay';
@@ -145,4 +147,9 @@ it('passes shit to NewGameWidget', () => {
   const inst = wrapper.instance() as any;
   expect(ngw.props().winner).toBe(wrapper.state().winner);
   expect(ngw.props().newGameHandler).toBe(inst.props.newGameHandler);
+});
+
+it('displays Paper as top level element', () => {
+  const wrapper = setup();
+  expect(wrapper.is(Paper)).toBeTruthy();
 });

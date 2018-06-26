@@ -16,10 +16,11 @@ import TileContent from '../TileContent/TileContent';
 const DIM: number = 5;
 const TILE_WIDTH: number = 120;
 const TILE_HEIGHT: number = 80;
+export const GRID_WIDTH: number = (TILE_WIDTH + 4) * DIM;  // 4px is default spacing.
 
 const styles = createStyles({
   grid: {
-    width: (TILE_WIDTH + 4) * DIM,  // 4px is default spacing.
+    width: GRID_WIDTH,
   }
 });
 
