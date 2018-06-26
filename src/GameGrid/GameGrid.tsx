@@ -20,7 +20,7 @@ export const GRID_WIDTH: number = (TILE_WIDTH + 4) * DIM;  // 4px is default spa
 
 const styles = createStyles({
   grid: {
-    width: GRID_WIDTH,
+    maxWidth: GRID_WIDTH,
   }
 });
 
