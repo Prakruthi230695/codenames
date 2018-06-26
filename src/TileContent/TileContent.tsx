@@ -98,8 +98,8 @@ class TileContent extends React.Component<Props, State> {
     this.generateTextColorClass = this.generateTextColorClass.bind(this);
   }
 
-  handleClick(e: any): void {
-    if (!this.state.guessed) {
+  handleClick(): void {
+    if (this.props.playerType !== "spymaster" && !this.state.guessed) {
       this.setState({ guessed: true });
       this.props.handleGuess(this.props.groupedWord.group);
     }

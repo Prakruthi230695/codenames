@@ -91,10 +91,7 @@ class Game extends React.Component<Props, State> {
   }
 
   handleGuess(tileGroup: Group): void {
-    if (this.state.playerType === "spymaster") {
-      return;
-    }
-
+    // NB: Have already filtered out "spymster" clicks in TileContent.
     if (tileGroup === "death") {
       this.setState((prevState) => {
         const winner: Winner = prevState.turn === "red" ? "blue" : "red";

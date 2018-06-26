@@ -40,13 +40,20 @@ it('displays the word', () => {
   expect(wrapper.find(Typography).childAt(0).text()).toBe("EUROPE");
 });
 
-it('is marked as guessed on click', () => {
+it('is marked as guessed on click as player', () => {
   const wrapper = setup();
   const tile = wrapper.find(Paper);
   tile.simulate('click');
   expect(wrapper.state().guessed).toBeTruthy();
   tile.simulate('click');
   expect(wrapper.state().guessed).toBeTruthy();
+});
+
+it('does not do anything on click as spymaster', () => {
+  const wrapper = setup({ playerType: "spymaster" });
+  const tile = wrapper.find(Paper);
+  tile.simulate('click');
+  expect(wrapper.state().guessed).toBeFalsy();
 });
 
 it('calls handleGuess on click', () => {

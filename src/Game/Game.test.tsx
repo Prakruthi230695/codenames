@@ -52,14 +52,16 @@ it('changes player via togglePlayerType', () => {
   expect(wrapper.state().playerType).toBe("player");
 });
 
-it('does not change state if playertype is spymaster', () => {
-  const wrapper = setup();
-  wrapper.setState({ playerType: "spymaster" });
-  const prevState = wrapper.state();
-  const inst = wrapper.instance() as any;
-  inst.handleGuess("red");
-  expect(prevState).toEqual(wrapper.state());
-});
+// I removed this because it's being handled in TileContent. It *was*
+// not written right, anyway (currently corrected to use deep cloning)
+// it('does not change state if playertype is spymaster', () => {
+//   const wrapper = setup();
+//   wrapper.setState({ playerType: "spymaster" });
+//   const prevState = JSON.parse(JSON.stringify(wrapper.state()));
+//   const inst = wrapper.instance() as any;
+//   inst.handleGuess("red");
+//   expect(prevState).toEqual(wrapper.state());
+// });
 
 it('the other team wins if death card picked', () => {
   const wrapper = setup();
