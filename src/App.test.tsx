@@ -6,7 +6,7 @@ import Game from './Game/Game';
 import App from './App';
 
 it('renders without crashing', () => {
-  const app = shallow(<App />);
+  shallow(<App />);
 });
 
 it('increments gameId on newGameHandler call', () => {
