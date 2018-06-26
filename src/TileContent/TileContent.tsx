@@ -24,6 +24,9 @@ enum ClassNames {
   PaperGuessedDeath = "paperGuessedDeath",
   PaperGuessedNeutral = "paperGuessedNeutral",
   PaperDefault = "paperDefault",
+
+  CursorGuessedOrSpymaster = "cursorGuessedOrSpymaster",
+  CursorPlayerUnguessed = "cursorPlayerUnguessed",
 }
 
 const styles = (theme: Theme) => createStyles({
@@ -60,6 +63,13 @@ const styles = (theme: Theme) => createStyles({
     backgroundColor: theme.palette.common.black,
   },
 
+  [ClassNames.CursorPlayerUnguessed]: {
+    cursor: "pointer",
+  },
+  [ClassNames.CursorGuessedOrSpymaster]: {
+    cursor: "default",
+  },
+
   textLayout: {
     wordBreak: 'break-all',
     padding: 5
@@ -94,8 +104,9 @@ class TileContent extends React.Component<Props, State> {
     }
 
     this.handleClick = this.handleClick.bind(this);
-    this.generatePaperColorClass = this.generatePaperColorClass.bind(this);
-    this.generateTextColorClass = this.generateTextColorClass.bind(this);
+    this.generatePaperColorClassKey = this.generatePaperColorClassKey.bind(this);
+    this.generateTextColorClassKey = this.generateTextColorClassKey.bind(this);
+    this.generateCursorClassKey = this.generateCursorClassKey.bind(this);
   }
 
   handleClick(): void {
@@ -105,10 +116,21 @@ class TileContent extends React.Component<Props, State> {
     }
   }
 
+  generateCursorClassKey(): string {
+    const { playerType } = this.props;
+    const { guessed } = this.state;
+
+    if (guessed || playerType === "spymaster") {
+      return ClassNames.CursorGuessedOrSpymaster;
+    } else {
+      return ClassNames.CursorPlayerUnguessed;
+    }
+  }
+
   /* The following two generate...() methods are to navigate the myriad
    * coloring options available for a tile.
    */
-  generatePaperColorClass(): string {
+  generatePaperColorClassKey(): string {
     const { groupedWord, playerType } = this.props;
     const { guessed } = this.state;
 
@@ -129,7 +151,7 @@ class TileContent extends React.Component<Props, State> {
     }
   }
 
-  generateTextColorClass(): string {
+  generateTextColorClassKey(): string {
     const { groupedWord, playerType } = this.props;
     const { guessed } = this.state;
 
@@ -151,11 +173,13 @@ class TileContent extends React.Component<Props, State> {
     const { groupedWord, classes } = this.props;
 
     // Do I want this / the generate...() methods typed as ClassNames?
-    const paperColorClassKey: string = this.generatePaperColorClass();
+    const paperColorClassKey: string = this.generatePaperColorClassKey();
     const paperColorClass: string = classes[paperColorClassKey];
-    const paperClasses: string = paperColorClass + " " + classes.paperLayout;
+    const cursorClass: string = this.generateCursorClassKey();
+    const cursorClassKey: string = classes[cursorClass];
+    const paperClasses: string = paperColorClass + " " + classes.paperLayout + " " + cursorClassKey;
 
-    const textColorClassKey: string = this.generateTextColorClass();
+    const textColorClassKey: string = this.generateTextColorClassKey();
     const textColorClass: string = classes[textColorClassKey];
     const textClasses: string = textColorClass + " " + classes.textLayout;
 
