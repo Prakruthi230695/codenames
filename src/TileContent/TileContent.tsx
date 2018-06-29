@@ -8,7 +8,7 @@ import purple from '@material-ui/core/colors/purple';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import { Group, GroupedWord } from '../GameGrid/GameGrid';
+import { GroupedWord } from '../GameGrid/GameGrid';
 
 
 enum ClassNames {
@@ -87,40 +87,30 @@ const styles = (theme: Theme) => createStyles({
 interface Props extends WithStyles<typeof styles> {
   groupedWord: GroupedWord,
   playerType: "player" | "spymaster",
-  handleGuess(tileGroup: Group): void
+  handleGuess(e: any): void
 }
 
-interface State {
-  guessed: boolean
-}
-
-
-class TileContent extends React.Component<Props, State> {
+class TileContent extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {
-      guessed: false
-    }
-
-    this.handleClick = this.handleClick.bind(this);
     this.generatePaperColorClassKey = this.generatePaperColorClassKey.bind(this);
     this.generateTextColorClassKey = this.generateTextColorClassKey.bind(this);
     this.generateCursorClassKey = this.generateCursorClassKey.bind(this);
   }
 
-  handleClick(): void {
-    if (this.props.playerType !== "spymaster" && !this.state.guessed) {
-      this.setState({ guessed: true });
-      this.props.handleGuess(this.props.groupedWord.group);
-    }
-  }
+  // handleClick(e: any): void {
+  //   console.log(e.currentTarget.textContent);
+  //   if (this.props.playerType !== "spymaster" && !this.state.guessed) {
+  //     this.setState({ guessed: true });
+  //     this.props.handleGuess(this.props.groupedWord.group);
+  //   }
+  // }
 
   generateCursorClassKey(): string {
-    const { playerType } = this.props;
-    const { guessed } = this.state;
+    const { groupedWord, playerType } = this.props;
 
-    if (guessed || playerType === "spymaster") {
+    if (groupedWord.guessed || playerType === "spymaster") {
       return ClassNames.CursorGuessedOrSpymaster;
     } else {
       return ClassNames.CursorPlayerUnguessed;
@@ -132,9 +122,8 @@ class TileContent extends React.Component<Props, State> {
    */
   generatePaperColorClassKey(): string {
     const { groupedWord, playerType } = this.props;
-    const { guessed } = this.state;
 
-    if (guessed) {
+    if (groupedWord.guessed) {
       if (groupedWord.group === "red") {
         return ClassNames.PaperGuessedRed;
       } else if (groupedWord.group === "blue") {
@@ -153,9 +142,8 @@ class TileContent extends React.Component<Props, State> {
 
   generateTextColorClassKey(): string {
     const { groupedWord, playerType } = this.props;
-    const { guessed } = this.state;
 
-    if (guessed) {
+    if (groupedWord.guessed) {
         return ClassNames.TextGuessed;
     } else if (playerType === "spymaster") {
       if (groupedWord.group === "red") {
@@ -170,7 +158,7 @@ class TileContent extends React.Component<Props, State> {
   }
 
   render() {
-    const { groupedWord, classes } = this.props;
+    const { groupedWord, handleGuess, classes } = this.props;
 
     // Do I want this / the generate...() methods typed as ClassNames?
     const paperColorClassKey: string = this.generatePaperColorClassKey();
@@ -186,7 +174,7 @@ class TileContent extends React.Component<Props, State> {
     return (
       <Paper
         className={paperClasses}
-        onClick={this.handleClick}
+        onClick={handleGuess}
         >
         <Typography
           className={textClasses}

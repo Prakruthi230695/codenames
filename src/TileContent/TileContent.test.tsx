@@ -10,7 +10,8 @@ import TileContent from './TileContent';
 interface Props {
   groupedWord: {
     word: string,
-    group: "red" | "blue" | "neutral" | "death"
+    group: "red" | "blue" | "neutral" | "death",
+    guessed: boolean
   },
   playerType: "player" | "spymaster",
   handleGuess: jest.Mock
@@ -20,7 +21,8 @@ const setup = (propOverrides?: Partial<Props>) => {
   const props: Props = Object.assign({
     groupedWord: {
       group: "red",
-      word: "EUROPE"
+      word: "EUROPE",
+      guessed: false
     },
     playerType: "player",
     handleGuess: jest.fn()
@@ -40,21 +42,23 @@ it('displays the word', () => {
   expect(wrapper.find(Typography).childAt(0).text()).toBe("EUROPE");
 });
 
-it('is marked as guessed on click as player', () => {
-  const wrapper = setup();
-  const tile = wrapper.find(Paper);
-  tile.simulate('click');
-  expect(wrapper.state().guessed).toBeTruthy();
-  tile.simulate('click');
-  expect(wrapper.state().guessed).toBeTruthy();
-});
+//  I am now housing state higher up (in `Game`)
+// it('is marked as guessed on click as player', () => {
+//   const wrapper = setup();
+//   const tile = wrapper.find(Paper);
+//   tile.simulate('click');
+//   expect(wrapper.state().guessed).toBeTruthy();
+//   tile.simulate('click');
+//   expect(wrapper.state().guessed).toBeTruthy();
+// });
 
-it('does not do anything on click as spymaster', () => {
-  const wrapper = setup({ playerType: "spymaster" });
-  const tile = wrapper.find(Paper);
-  tile.simulate('click');
-  expect(wrapper.state().guessed).toBeFalsy();
-});
+//  I am handling now all click logic higher up (in `Game`)
+// it('does not do anything on click as spymaster', () => {
+//   const wrapper = setup({ playerType: "spymaster" });
+//   const tile = wrapper.find(Paper);
+//   tile.simulate('click');
+//   expect(wrapper.state().guessed).toBeFalsy();
+// });
 
 it('calls handleGuess on click', () => {
   const spy = jest.fn();
