@@ -43,16 +43,17 @@ const styles = createStyles({
   }
 });
 
-type PlayerType = "player" | "spymaster";
-type Turn = "red" | "blue";
-type Winner = "" | "red" | "blue";
-interface Remaining {
+export type PlayerType = "player" | "spymaster";
+type Teams = "red" | "blue";
+export type Turn = Teams;
+export type Winner = "" | Teams;
+export interface Remaining {
   red: number,
   blue: number
 }
 // Export these so that TileContent can use it in its Props interface
 // and handleClick can use Group type.
-export type Group = "red" | "blue" | "neutral" | "death"
+export type Group = "neutral" | "death" | Teams;
 export interface GroupedWord {
     word: string,
     group: Group,
@@ -156,11 +157,11 @@ class Game extends React.Component<Props, State> {
       this.setState((prevState) => {
         let winner: Winner = prevState.winner;
         const remaining: Remaining = Object.assign({}, prevState.remaining);  // Cloning
-        const turn: Turn = clickedTileGroup.group as Turn;  // TODO: typing.
+        const turn: Turn = clickedTileGroup.group as Turn;
 
         remaining[clickedTileGroup.group] = prevState.remaining[clickedTileGroup.group] - 1;
         if (remaining[clickedTileGroup.group] === 0) {
-          winner = clickedTileGroup.group as Winner;  // TODO: typing.
+          winner = clickedTileGroup.group as Winner;
         }
         return { winner, turn, remaining };
       });

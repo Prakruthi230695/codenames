@@ -2,9 +2,10 @@ import * as React from 'react';
 
 import Button from '@material-ui/core/Button';
 
+import { Winner } from '../Game/Game';
 
 interface Props {
-  winner: "" | "red" | "blue",
+  winner: Winner,
   endTurnHandler(e: React.MouseEvent<HTMLButtonElement>): void
 }
 

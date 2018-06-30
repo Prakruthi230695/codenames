@@ -6,9 +6,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
+import { Winner } from '../Game/Game';
 
 interface Props {
-  winner: '' | 'red' | 'blue',
+  winner: Winner,
   newGameHandler(e: React.MouseEvent<HTMLButtonElement>): void
 }
 

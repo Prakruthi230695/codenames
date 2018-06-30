@@ -8,7 +8,7 @@ import purple from '@material-ui/core/colors/purple';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import { GroupedWord } from '../Game/Game';
+import { GroupedWord, PlayerType } from '../Game/Game';
 
 
 enum ClassNames {
@@ -86,7 +86,7 @@ const styles = (theme: Theme) => createStyles({
 
 interface Props extends WithStyles<typeof styles> {
   groupedWord: GroupedWord,
-  playerType: "player" | "spymaster",
+  playerType: PlayerType,
   handleGuess(e: any): void
 }
 

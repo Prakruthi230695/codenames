@@ -7,7 +7,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 
 import TileContent from '../TileContent/TileContent';
-import { GroupedWord } from '../Game/Game';
+import { GroupedWord, PlayerType } from '../Game/Game';
 
 
 const DIM: number = 5;
@@ -22,7 +22,7 @@ const styles = createStyles({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  playerType: "player" | "spymaster",
+  playerType: PlayerType,
   groupedWords: GroupedWord[],
   handleGuess(e: any): void
 }

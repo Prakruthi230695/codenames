@@ -5,6 +5,8 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { WithStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
+import { Turn, Winner } from '../Game/Game';
+
 const styles = (theme: Theme) => createStyles({
   blue: {
     color: theme.palette.secondary.main
@@ -15,8 +17,8 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  turn: 'red' | 'blue',
-  winner: '' | 'red' | 'blue',
+  turn: Turn,
+  winner: Winner,
 }
 
 const TurnIndicator: React.SFC<Props> = (props: Props) => {

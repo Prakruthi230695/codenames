@@ -4,6 +4,8 @@ import { createStyles, withStyles } from '@material-ui/core/styles';
 import { WithStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 
+import { Remaining } from '../Game/Game';
+
 const styles = createStyles({
   root: {
     display: 'inline-block'
@@ -16,10 +18,7 @@ const styles = createStyles({
 });
 
 interface Props extends WithStyles<typeof styles> {
-  remaining: {
-    red: number,
-    blue: number
-  }
+  remaining: Remaining
 }
 
 const ScoreDisplay: React.SFC<Props> = (props: Props) => {

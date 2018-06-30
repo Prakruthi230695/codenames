@@ -10,6 +10,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
+import { PlayerType } from '../Game/Game';
+
 const styles = (theme: Theme) => createStyles({
 });
 
@@ -18,12 +20,8 @@ interface Props extends WithStyles<typeof styles> {
   togglePlayerType(e: React.FormEvent<HTMLInputElement>): void
 }
 
-// This is dumb. If I don't use a boolean in Game, I might declare it there
-// and import it here.
-type PlayerTypes = "player" | "spymaster"
-
 interface State {
-  value: PlayerTypes
+  value: PlayerType
 }
 
 class PlayerToggle extends React.Component<Props, State> {
@@ -39,7 +37,7 @@ class PlayerToggle extends React.Component<Props, State> {
 
   // Can I just use the value parameter? I'm confused. https://material-ui.com/api/radio-group/
   handleChange(e: React.FormEvent<HTMLInputElement>): void {
-    this.setState({ value: e.currentTarget.value as PlayerTypes });
+    this.setState({ value: e.currentTarget.value as PlayerType });
     this.props.togglePlayerType(e);
   }
 
