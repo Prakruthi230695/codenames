@@ -13,20 +13,22 @@ import NewGameWidget from '../NewGameWidget/NewGameWidget';
 
 import Game, { GroupedWord } from './Game';
 
+const DEFAULT_STATE = {
+  playerType: "player",
+  turn: "red",
+  winner: "",
+  remaining: {
+    red: 9,
+    blue: 8
+  },
+  groupedWords: [],  // as GroupedWord[],
+}
 
-interface Props {
-  newGameHandler(e: React.MouseEvent<HTMLButtonElement>): void
-};
-
-const setup = (propOverrides?: Partial<Props>) => {
-  const props: Props = Object.assign({
-    newGameHandler: jest.fn()
-  }, propOverrides);
-
+const setup = () => {
   // Need to do this so that I can get at the state of the component wrapped
   // in the withStyles(styles) HOC.
   const shallow = createShallow();
-  const shallowWrapper = shallow(<Game {...props} />);
+  const shallowWrapper = shallow(<Game  />);
   const mount = createMount();
   const wrapper = mount(shallowWrapper.getElement());
   return wrapper;
@@ -34,6 +36,27 @@ const setup = (propOverrides?: Partial<Props>) => {
 
 it('renders without crashing', () => {
   setup();
+});
+
+it('creates a new game with default state, but new words and new ptKey', () => {
+  const wrapper = setup();
+  wrapper.setState({
+    playerType: "spymaster",
+    turn: "blue",
+    winner: "blue",
+    remaining: {
+      red: 3,
+      blue: 0
+    }
+  });  // Changing all the things that are revertible.
+  const inst = wrapper.instance() as any;
+  const prevStateGWs = JSON.parse(JSON.stringify(wrapper.state().groupedWords));
+  inst.createNewGame();
+  expect(wrapper.state().turn).toBe(DEFAULT_STATE.turn);
+  expect(wrapper.state().playerType).toBe(DEFAULT_STATE.playerType);
+  expect(wrapper.state().winner).toBe(DEFAULT_STATE.winner);
+  expect(wrapper.state().remaining).toEqual(DEFAULT_STATE.remaining);
+  expect(wrapper.state().groupedWords).not.toEqual(prevStateGWs);
 });
 
 it('toggles turns via endTurnHandler', () => {
@@ -180,7 +203,7 @@ it('passes shit to NewGameWidget', () => {
   const ngw = wrapper.find(NewGameWidget);
   const inst = wrapper.instance() as any;
   expect(ngw.props().winner).toBe(wrapper.state().winner);
-  expect(ngw.props().newGameHandler).toBe(inst.props.newGameHandler);
+  expect(ngw.props().newGameHandler).toBe(inst.createNewGame);
 });
 
 it('displays Paper as top level element', () => {

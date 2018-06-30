@@ -60,7 +60,6 @@ export interface GroupedWord {
     guessed: boolean
 }
 
-
 interface State {
   playerType: PlayerType,
   turn: Turn,
@@ -69,15 +68,7 @@ interface State {
   groupedWords: GroupedWord[]
 };
 
-interface Props extends WithStyles<typeof styles> {
-  newGameHandler(e: React.MouseEvent<HTMLButtonElement>): void
-};
-
-class Game extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
+const DEFAULT_STATE: State = {
       playerType: "player",
       turn: "red",
       winner: "",
@@ -85,15 +76,30 @@ class Game extends React.Component<Props, State> {
         red: 9,
         blue: 8
       },
-      groupedWords: []  // as GroupedWord[]
-    }
+      groupedWords: [],  // as GroupedWord[],
+};
+
+interface Props extends WithStyles<typeof styles> { };
+
+class Game extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
 
     this.togglePlayerType = this.togglePlayerType.bind(this);
     this.endTurnHandler = this.endTurnHandler.bind(this);
     this.handleGuess = this.handleGuess.bind(this);
+    this.createNewGame = this.createNewGame.bind(this);
   }
 
   componentDidMount() {
+    this.createNewGame();
+  }
+
+  createNewGame() {
+    this.setState({ ...DEFAULT_STATE });
+    this.setState({ playerToggleKey: Math.random() })  // I just need this to change somehow.
+
     shuffle(WORDBANK);
     const gameWords: string[] = WORDBANK.slice(0, 25);
     const groupedWords: GroupedWord[] = [];
@@ -169,7 +175,7 @@ class Game extends React.Component<Props, State> {
   }
 
   render() {
-    const { newGameHandler, classes } = this.props;
+    const { classes } = this.props;
     const {
       playerType,
       turn,
@@ -205,7 +211,7 @@ class Game extends React.Component<Props, State> {
           />
           <NewGameWidget
             winner={winner}
-            newGameHandler={newGameHandler}
+            newGameHandler={this.createNewGame}
           />
         </div>
       </Paper>
