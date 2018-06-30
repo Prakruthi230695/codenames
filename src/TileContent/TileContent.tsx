@@ -8,7 +8,7 @@ import purple from '@material-ui/core/colors/purple';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import { GroupedWord, PlayerType } from '../Game/Game';
+import { GroupedWord, PlayerType, Winner } from '../Game/Game';
 
 
 enum ClassNames {
@@ -87,6 +87,7 @@ const styles = (theme: Theme) => createStyles({
 interface Props extends WithStyles<typeof styles> {
   groupedWord: GroupedWord,
   playerType: PlayerType,
+  winner: Winner,
   handleGuess(e: React.MouseEvent<HTMLDivElement>): void
 }
 
@@ -108,9 +109,11 @@ class TileContent extends React.Component<Props> {
   // }
 
   generateCursorClassKey(): string {
-    const { groupedWord, playerType } = this.props;
+    const { groupedWord, playerType, winner } = this.props;
 
-    if (groupedWord.guessed || playerType === "spymaster") {
+    if (groupedWord.guessed ||
+        playerType === "spymaster" ||
+        !!winner) {
       return ClassNames.CursorGuessedOrSpymaster;
     } else {
       return ClassNames.CursorPlayerUnguessed;

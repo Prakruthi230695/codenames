@@ -197,6 +197,7 @@ class Game extends React.Component<Props, State> {
             playerType={playerType}
             handleGuess={this.handleGuess}
             groupedWords={groupedWords}
+            winner={winner}
           />
         <div className={classes.belowGrid}>
           <PlayerToggle

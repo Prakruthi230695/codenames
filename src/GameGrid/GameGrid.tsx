@@ -7,7 +7,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 
 import TileContent from '../TileContent/TileContent';
-import { GroupedWord, PlayerType } from '../Game/Game';
+import { GroupedWord, PlayerType, Winner } from '../Game/Game';
 
 
 const DIM: number = 5;
@@ -24,12 +24,13 @@ const styles = createStyles({
 interface Props extends WithStyles<typeof styles> {
   playerType: PlayerType,
   groupedWords: GroupedWord[],
+  winner: Winner,
   handleGuess(e: React.MouseEvent<HTMLDivElement>): void
 }
 
 class GameGrid extends React.Component<Props> {
   render() {
-    const { playerType, groupedWords, handleGuess, classes } = this.props;
+    const { playerType, groupedWords, handleGuess, winner, classes } = this.props;
     return (
       <div className={classes.grid}>
         <GridList
@@ -44,6 +45,7 @@ class GameGrid extends React.Component<Props> {
                 groupedWord={groupedWord}
                 playerType={playerType}
                 handleGuess={handleGuess}
+                winner={winner}
               />
             </GridListTile>
           ))}

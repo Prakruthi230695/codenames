@@ -5,12 +5,13 @@ import { createShallow, createMount } from '@material-ui/core/test-utils';
 import TileContent from '../TileContent/TileContent';
 import GameGrid from './GameGrid';
 
-import { GroupedWord } from '../Game/Game';
+import { GroupedWord, Winner } from '../Game/Game';
 
 
 interface Props {
   playerType: "player" | "spymaster",
   groupedWords: GroupedWord[],
+  winner: Winner,
   handleGuess(e: any): void
 }
 
@@ -24,6 +25,7 @@ const setup = (propOverrides?: Partial<Props>) => {
         guessed: false
       },
     ],
+    winner: "",
     handleGuess: jest.fn()
   }, propOverrides);
 

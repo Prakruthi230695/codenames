@@ -14,6 +14,7 @@ interface Props {
     guessed: boolean
   },
   playerType: "player" | "spymaster",
+  winner: "" | "red" | "blue",
   handleGuess: jest.Mock
 }
 
@@ -25,6 +26,7 @@ const setup = (propOverrides?: Partial<Props>) => {
       guessed: false
     },
     playerType: "player",
+    winner: "",
     handleGuess: jest.fn()
   }, propOverrides);
 
