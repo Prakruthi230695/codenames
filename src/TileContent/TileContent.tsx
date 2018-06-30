@@ -8,7 +8,7 @@ import purple from '@material-ui/core/colors/purple';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
-import { GroupedWord } from '../GameGrid/GameGrid';
+import { GroupedWord } from '../Game/Game';
 
 
 enum ClassNames {

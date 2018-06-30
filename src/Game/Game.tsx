@@ -12,7 +12,7 @@ import NewGameWidget from '../NewGameWidget/NewGameWidget';
 
 import Paper from '@material-ui/core/Paper';
 
-import { GRID_WIDTH, Group } from '../GameGrid/GameGrid';
+import { GRID_WIDTH } from '../GameGrid/GameGrid';
 
 
 const PADDING: number = 20;
@@ -47,6 +47,15 @@ interface Remaining {
   red: number,
   blue: number
 }
+// Export these so that TileContent can use it in its Props interface
+// and handleClick can use Group type.
+export type Group = "red" | "blue" | "neutral" | "death"
+export interface GroupedWord {
+    word: string,
+    group: Group,
+    guessed: boolean
+}
+
 
 interface State {
   playerType: PlayerType,

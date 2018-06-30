@@ -11,6 +11,7 @@ import { shuffle } from '../utils';
 import WORDBANK from '../WORDBANK';
 
 import TileContent from '../TileContent/TileContent';
+import { Group, GroupedWord } from '../Game/Game';
 
 
 const DIM: number = 5;
@@ -23,14 +24,6 @@ const styles = createStyles({
     maxWidth: GRID_WIDTH,
   }
 });
-
-// Export these so that TileContent can use it in its Props interface
-// and handleClick can use Group type.
-export type Group = "red" | "blue" | "neutral" | "death"
-export interface GroupedWord {
-    word: string,
-    group: Group
-}
 
 interface Props extends WithStyles<typeof styles> {
   playerType: "player" | "spymaster",
