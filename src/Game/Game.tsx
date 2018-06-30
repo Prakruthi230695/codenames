@@ -10,6 +10,9 @@ import GameGrid from '../GameGrid/GameGrid';
 import EndTurnButton from '../EndTurnButton/EndTurnButton';
 import NewGameWidget from '../NewGameWidget/NewGameWidget';
 
+import { shuffle } from '../utils';
+import WORDBANK from '../WORDBANK';
+
 import Paper from '@material-ui/core/Paper';
 
 import { GRID_WIDTH } from '../GameGrid/GameGrid';
@@ -62,6 +65,7 @@ interface State {
   turn: Turn,
   winner: Winner,
   remaining: Remaining,
+  groupedWords: GroupedWord[]
 };
 
 interface Props extends WithStyles<typeof styles> {
@@ -79,7 +83,8 @@ class Game extends React.Component<Props, State> {
       remaining: {
         red: 9,
         blue: 8
-      }
+      },
+      groupedWords: []  // as GroupedWord[]
     }
 
     this.togglePlayerType = this.togglePlayerType.bind(this);
@@ -87,6 +92,27 @@ class Game extends React.Component<Props, State> {
     this.handleGuess = this.handleGuess.bind(this);
   }
 
+  componentDidMount() {
+    shuffle(WORDBANK);
+    const gameWords: string[] = WORDBANK.slice(0, 25);
+    const groupedWords: GroupedWord[] = [];
+
+    for (const word of gameWords) {
+      // TODO: convert magic numbers.
+      const group = groupedWords.length < 9  ? "red"     :
+                    groupedWords.length < 17 ? "blue"    :
+                    groupedWords.length < 24 ? "neutral" : "death";
+      const groupedWord: GroupedWord = {
+        word,
+        group,
+        guessed: false
+      };
+      groupedWords.push(groupedWord);
+    }
+    shuffle(groupedWords);
+
+    this.setState({ groupedWords });
+  }
 
   togglePlayerType(e: React.FormEvent<HTMLInputElement>): void {
     this.setState({ playerType: e.currentTarget.value as PlayerType });
@@ -99,24 +125,42 @@ class Game extends React.Component<Props, State> {
     });
   }
 
-  handleGuess(tileGroup: Group): void {
-    // NB: Have already filtered out "spymster" clicks in TileContent.
-    if (tileGroup === "death") {
+  handleGuess(e: any): void {
+    const word: string = e.currentTarget.textContent;
+    const stateTileGroup: GroupedWord = this.state.groupedWords.filter(gw => gw.word === word)[0];  // The filter should return a single GroupedWord
+    const clickedTileGroup: GroupedWord = Object.assign({}, stateTileGroup);  // Clones so that I don't mutate the state.
+
+    if (this.state.playerType === "spymaster" ||
+        clickedTileGroup.guessed ||
+        !!this.state.winner) {
+      return;
+    }
+    // Need to mark it as guessed no matter what.
+    this.setState((prevState) => {
+      clickedTileGroup.guessed = true;
+
+      const clonedPrevState: GroupedWord[] = prevState.groupedWords.map(gw => Object.assign({}, gw));
+      const index: number = clonedPrevState.findIndex(gw => gw.word === clickedTileGroup.word);
+      clonedPrevState[index] = clickedTileGroup;
+      return { groupedWords: clonedPrevState };
+    });
+
+    if (clickedTileGroup.group === "death") {
       this.setState((prevState) => {
         const winner: Winner = prevState.turn === "red" ? "blue" : "red";
         return { winner };
       });
-    } else if (tileGroup === "neutral") {
+    } else if (clickedTileGroup.group === "neutral") {
       this.endTurnHandler();  // Just switches whose turn it is.
     } else {
       this.setState((prevState) => {
         let winner: Winner = prevState.winner;
-        const remaining: Remaining = prevState.remaining;
-        const turn: Turn = tileGroup;
+        const remaining: Remaining = Object.assign({}, prevState.remaining);  // Cloning
+        const turn: Turn = clickedTileGroup.group as Turn;  // TODO: typing.
 
-        remaining[tileGroup] = prevState.remaining[tileGroup] - 1;
-        if (remaining[tileGroup] === 0) {
-          winner = tileGroup;
+        remaining[clickedTileGroup.group] = prevState.remaining[clickedTileGroup.group] - 1;
+        if (remaining[clickedTileGroup.group] === 0) {
+          winner = clickedTileGroup.group as Winner;  // TODO: typing.
         }
         return { winner, turn, remaining };
       });
@@ -129,7 +173,8 @@ class Game extends React.Component<Props, State> {
       playerType,
       turn,
       winner,
-      remaining
+      remaining,
+      groupedWords
     } = this.state;
 
     return (
@@ -150,6 +195,7 @@ class Game extends React.Component<Props, State> {
           <GameGrid
             playerType={playerType}
             handleGuess={this.handleGuess}
+            groupedWords={groupedWords}
           />
         <div className={classes.belowGrid}>
           <PlayerToggle

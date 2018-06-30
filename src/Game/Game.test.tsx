@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { createShallow } from '@material-ui/core/test-utils';
+import { createShallow, createMount } from '@material-ui/core/test-utils';
 
 import Paper from '@material-ui/core/Paper';
 
@@ -11,7 +11,7 @@ import GameGrid from '../GameGrid/GameGrid';
 import EndTurnButton from '../EndTurnButton/EndTurnButton';
 import NewGameWidget from '../NewGameWidget/NewGameWidget';
 
-import Game from './Game';
+import Game, { GroupedWord } from './Game';
 
 
 interface Props {
@@ -23,8 +23,12 @@ const setup = (propOverrides?: Partial<Props>) => {
     newGameHandler: jest.fn()
   }, propOverrides);
 
-  const shallow = createShallow({untilSelector: 'Game'});
-  const wrapper = shallow(<Game {...props} />);
+  // Need to do this so that I can get at the state of the component wrapped
+  // in the withStyles(styles) HOC.
+  const shallow = createShallow();
+  const shallowWrapper = shallow(<Game {...props} />);
+  const mount = createMount();
+  const wrapper = mount(shallowWrapper.getElement());
   return wrapper;
 };
 
@@ -52,30 +56,53 @@ it('changes player via togglePlayerType', () => {
   expect(wrapper.state().playerType).toBe("player");
 });
 
-// I removed this because it's being handled in TileContent. It *was*
-// not written right, anyway (currently corrected to use deep cloning)
-// it('does not change state if playertype is spymaster', () => {
-//   const wrapper = setup();
-//   wrapper.setState({ playerType: "spymaster" });
-//   const prevState = JSON.parse(JSON.stringify(wrapper.state()));
-//   const inst = wrapper.instance() as any;
-//   inst.handleGuess("red");
-//   expect(prevState).toEqual(wrapper.state());
-// });
+it('does not change groupedWords state on click if playertype is spymaster', () => {
+  const wrapper = setup();
+  wrapper.setState({ playerType: "spymaster" });
+  const prevState = JSON.parse(JSON.stringify(wrapper.state()));
+  const inst = wrapper.instance() as any;
+  const rw = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "red");
+  inst.handleGuess({ currentTarget: { textContent: rw.word } });
+  expect(prevState).toEqual(wrapper.state());
+});
+
+it('does not change groupedWords state on click if tile already guessed', () => {
+  const wrapper = setup();
+  const inst = wrapper.instance() as any;
+  const rw = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "red");
+  inst.handleGuess({ currentTarget: { textContent: rw.word } });
+  const prevState = JSON.parse(JSON.stringify(wrapper.state()));
+  const rw2 = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "red");
+  inst.handleGuess({ currentTarget: { textContent: rw2.word } });
+  expect(prevState).toEqual(wrapper.state());
+});
+
+it('does not allow TileContent clicks after game is over', () => {
+  const wrapper = setup();
+  wrapper.setState({ winner : "red" });
+  const prevState = JSON.parse(JSON.stringify(wrapper.state()));
+  const inst = wrapper.instance() as any;
+  const neutral = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "neutral");
+  inst.handleGuess({ currentTarget: { textContent: neutral.word } });
+  expect(prevState).toEqual(wrapper.state());
+});
 
 it('the other team wins if death card picked', () => {
   const wrapper = setup();
   const inst = wrapper.instance() as any;
-  inst.handleGuess("death");
+  const dc = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "death");
+  inst.handleGuess({ currentTarget: { textContent: dc.word } });
   expect(wrapper.state().winner).toBe("blue");
 });
 
 it('toggles turn if neutral guessed', () => {
   const wrapper = setup();
   const inst = wrapper.instance() as any;
-  inst.handleGuess("neutral");
+  const neutral = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "neutral");
+  inst.handleGuess({ currentTarget: { textContent: neutral.word } });
   expect(wrapper.state().turn).toBe("blue");
-  inst.handleGuess("neutral");
+  const neutral2 = wrapper.state().groupedWords.filter((i: GroupedWord) => i.group === "neutral")[1];
+  inst.handleGuess({ currentTarget: { textContent: neutral2.word } });
   expect(wrapper.state().turn).toBe("red");
 });
 
@@ -84,18 +111,22 @@ it('decrements score on color guess', () => {
   const prevRedCount = wrapper.state().remaining.red;
   const prevBlueCount = wrapper.state().remaining.blue;
   const inst = wrapper.instance() as any;
-  inst.handleGuess("red");
+  const rw = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "red");
+  inst.handleGuess({ currentTarget: { textContent: rw.word } });
   expect(wrapper.state().remaining.red).toBe(prevRedCount - 1);
-  inst.handleGuess("blue");
+  const bw = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "blue");
+  inst.handleGuess({ currentTarget: { textContent: bw.word } });
   expect(wrapper.state().remaining.blue).toBe(prevBlueCount - 1);
 });
 
 it('switches turn if other team\'s color guessed', () => {
   const wrapper = setup();
   const inst = wrapper.instance() as any;
-  inst.handleGuess("blue");
+  const bw = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "blue");
+  inst.handleGuess({ currentTarget: { textContent: bw.word } });
   expect(wrapper.state().turn).toBe("blue");
-  inst.handleGuess("red");
+  const rw = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "red");
+  inst.handleGuess({ currentTarget: { textContent: rw.word } });
   expect(wrapper.state().turn).toBe("red");
 });
 
@@ -103,7 +134,8 @@ it('marks game as won if counter reaches zero', () => {
   const wrapper = setup();
   wrapper.setState({ remaining: {red: 1, blue: 5 }});
   const inst = wrapper.instance() as any;
-  inst.handleGuess("red");
+  const rw = wrapper.state().groupedWords.find((i: GroupedWord) => i.group === "red");
+  inst.handleGuess({ currentTarget: { textContent: rw.word } });
   expect(wrapper.state().winner).toBe("red");
 });
 
@@ -153,5 +185,31 @@ it('passes shit to NewGameWidget', () => {
 
 it('displays Paper as top level element', () => {
   const wrapper = setup();
-  expect(wrapper.is(Paper)).toBeTruthy();
+  expect(wrapper.childAt(0).is(Paper)).toBeTruthy();
+});
+
+it('produces 25 grouped words', () => {
+  const wrapper = setup();
+  expect(wrapper.state().groupedWords.length).toBe(25);
+});
+
+it('produces the right number of words per group', () => {
+  const wrapper = setup();
+  const groupedWords = wrapper.state().groupedWords;
+  const groupCounts = {
+    "red": 0,
+    "blue": 0,
+    "neutral": 0,
+    "death": 0
+  }
+  const expectedGroupCounts = {
+    "red": 9,
+    "blue": 8,
+    "neutral": 7,
+    "death": 1
+  }
+  for (const groupedWord of groupedWords) {
+    groupCounts[groupedWord.group] += 1;
+  }
+  expect(expectedGroupCounts).toEqual(groupCounts);
 });

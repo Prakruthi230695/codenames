@@ -6,12 +6,8 @@ import { WithStyles } from '@material-ui/core';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 
-
-import { shuffle } from '../utils';
-import WORDBANK from '../WORDBANK';
-
 import TileContent from '../TileContent/TileContent';
-import { Group, GroupedWord } from '../Game/Game';
+import { GroupedWord } from '../Game/Game';
 
 
 const DIM: number = 5;
@@ -27,45 +23,13 @@ const styles = createStyles({
 
 interface Props extends WithStyles<typeof styles> {
   playerType: "player" | "spymaster",
-  handleGuess(tileGroup: Group): void
+  groupedWords: GroupedWord[],
+  handleGuess(e: any): void
 }
 
-interface State {
-  groupedWords: GroupedWord[]
-}
-
-
-class GameGrid extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      groupedWords: []  // as GroupedWord[]
-    }
-  }
-
-  /** Populates the set of words for the game. */
-  componentDidMount() {
-    shuffle(WORDBANK);
-    const gameWords: string[] = WORDBANK.slice(0, 25);
-    const groupedWords: GroupedWord[] = [];
-
-    for (const word of gameWords) {
-      // TODO: convert magic numbers.
-      const group = groupedWords.length < 9  ? "red"     :
-                    groupedWords.length < 17 ? "blue"    :
-                    groupedWords.length < 24 ? "neutral" : "death";
-      const groupedWord: GroupedWord = { word, group };
-      groupedWords.push(groupedWord);
-    }
-    shuffle(groupedWords);
-
-    this.setState({ groupedWords });
-  }
-
+class GameGrid extends React.Component<Props> {
   render() {
-    const { groupedWords } = this.state;
-    const { playerType, handleGuess, classes } = this.props;
+    const { playerType, groupedWords, handleGuess, classes } = this.props;
     return (
       <div className={classes.grid}>
         <GridList
