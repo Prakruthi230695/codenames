@@ -16,35 +16,12 @@ const theme = createMuiTheme({
   }
 });
 
-interface State {
-  gameId: number
-};
-
-class App extends React.Component<{}, State> {
-  constructor(props: any) {
-    super(props);
-
-    this.state = {
-      gameId: 1
-    };
-
-    this.newGameHandler = this.newGameHandler.bind(this);
-  }
-
-  newGameHandler(): void {
-    this.setState((prevState) => {
-      return { gameId: prevState.gameId + 1 }
-    });
-  }
-
+class App extends React.Component<{}> {
   public render() {
     return (
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <Game
-          key={this.state.gameId}  // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#when-to-use-derived-state
-          newGameHandler={this.newGameHandler}
-        />
+        <Game />
       </MuiThemeProvider>
     );
   }
