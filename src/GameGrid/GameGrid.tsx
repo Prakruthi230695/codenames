@@ -24,7 +24,7 @@ const styles = createStyles({
 interface Props extends WithStyles<typeof styles> {
   playerType: PlayerType,
   groupedWords: GroupedWord[],
-  handleGuess(e: any): void
+  handleGuess(e: React.MouseEvent<HTMLDivElement>): void
 }
 
 class GameGrid extends React.Component<Props> {

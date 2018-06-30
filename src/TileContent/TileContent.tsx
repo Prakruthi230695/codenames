@@ -87,7 +87,7 @@ const styles = (theme: Theme) => createStyles({
 interface Props extends WithStyles<typeof styles> {
   groupedWord: GroupedWord,
   playerType: PlayerType,
-  handleGuess(e: any): void
+  handleGuess(e: React.MouseEvent<HTMLDivElement>): void
 }
 
 class TileContent extends React.Component<Props> {

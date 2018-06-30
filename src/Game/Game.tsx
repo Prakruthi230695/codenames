@@ -126,8 +126,8 @@ class Game extends React.Component<Props, State> {
     });
   }
 
-  handleGuess(e: any): void {
-    const word: string = e.currentTarget.textContent;
+  handleGuess(e: React.MouseEvent<HTMLDivElement>): void {
+    const word: string = e.currentTarget.textContent as string;
     const stateTileGroup: GroupedWord = this.state.groupedWords.filter(gw => gw.word === word)[0];  // The filter should return a single GroupedWord
     const clickedTileGroup: GroupedWord = Object.assign({}, stateTileGroup);  // Clones so that I don't mutate the state.
 
