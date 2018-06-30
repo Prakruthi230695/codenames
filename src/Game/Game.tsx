@@ -65,7 +65,8 @@ interface State {
   turn: Turn,
   winner: Winner,
   remaining: Remaining,
-  groupedWords: GroupedWord[]
+  groupedWords: GroupedWord[],
+  playerToggleKey: number,
 };
 
 const DEFAULT_STATE: State = {
@@ -77,6 +78,7 @@ const DEFAULT_STATE: State = {
         blue: 8
       },
       groupedWords: [],  // as GroupedWord[],
+      playerToggleKey: 0
 };
 
 interface Props extends WithStyles<typeof styles> { };
@@ -85,6 +87,7 @@ class Game extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    this.state = DEFAULT_STATE;
 
     this.togglePlayerType = this.togglePlayerType.bind(this);
     this.endTurnHandler = this.endTurnHandler.bind(this);
@@ -181,7 +184,8 @@ class Game extends React.Component<Props, State> {
       turn,
       winner,
       remaining,
-      groupedWords
+      groupedWords,
+      playerToggleKey
     } = this.state;
 
     return (
@@ -207,6 +211,7 @@ class Game extends React.Component<Props, State> {
           />
         <div className={classes.belowGrid}>
           <PlayerToggle
+            key={playerToggleKey}
             togglePlayerType={this.togglePlayerType}
           />
           <NewGameWidget

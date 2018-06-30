@@ -22,6 +22,7 @@ const DEFAULT_STATE = {
     blue: 8
   },
   groupedWords: [],  // as GroupedWord[],
+  playerToggleKey: 0
 }
 
 const setup = () => {
@@ -56,6 +57,7 @@ it('creates a new game with default state, but new words and new ptKey', () => {
   expect(wrapper.state().playerType).toBe(DEFAULT_STATE.playerType);
   expect(wrapper.state().winner).toBe(DEFAULT_STATE.winner);
   expect(wrapper.state().remaining).toEqual(DEFAULT_STATE.remaining);
+  expect(wrapper.state().playerToggleKey).not.toBe(DEFAULT_STATE.playerToggleKey);
   expect(wrapper.state().groupedWords).not.toEqual(prevStateGWs);
 });
 
