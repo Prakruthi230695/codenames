@@ -1,5 +1,5 @@
 {
-  "name": "codenames backend",
+  "name": "codenamesBackend",
   "version": "0.1.0",
   "description": "For the backend portion of the codenames project.",
   "main": "server.js",
