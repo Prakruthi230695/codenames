@@ -69,7 +69,13 @@ interface State {
   playerToggleKey: number,
 };
 
-const DEFAULT_STATE: State = {
+interface Props extends WithStyles<typeof styles> { };
+
+class Game extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
       playerType: "player",
       turn: "red",
       winner: "",
@@ -79,15 +85,7 @@ const DEFAULT_STATE: State = {
       },
       groupedWords: [],  // as GroupedWord[],
       playerToggleKey: 0
-};
-
-interface Props extends WithStyles<typeof styles> { };
-
-class Game extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = DEFAULT_STATE;
+    };
 
     this.togglePlayerType = this.togglePlayerType.bind(this);
     this.endTurnHandler = this.endTurnHandler.bind(this);
@@ -100,8 +98,16 @@ class Game extends React.Component<Props, State> {
   }
 
   createNewGame() {
-    this.setState({ ...DEFAULT_STATE });
-    this.setState({ playerToggleKey: Math.random() })  // I just need this to change somehow.
+    this.setState({
+      playerType: "player",
+      turn: "red",
+      winner: "",
+      remaining: {
+        red: 9,
+        blue: 8
+      },
+      playerToggleKey: Math.random()
+    });
 
     shuffle(WORDBANK);
     const gameWords: string[] = WORDBANK.slice(0, 25);
