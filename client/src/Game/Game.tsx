@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as io from 'socket.io-client';
 
 import { createStyles, withStyles } from '@material-ui/core/styles';
 import { WithStyles } from '@material-ui/core';
@@ -95,6 +96,8 @@ class Game extends React.Component<Props, State> {
 
   componentDidMount() {
     this.createNewGame();
+    const socket = io();
+    console.log(socket);
   }
 
   createNewGame() {
