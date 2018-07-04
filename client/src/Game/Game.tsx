@@ -73,6 +73,9 @@ interface State {
 interface Props extends WithStyles<typeof styles> { };
 
 class Game extends React.Component<Props, State> {
+
+  socket: SocketIOClient.Socket;
+
   constructor(props: Props) {
     super(props);
 
@@ -96,8 +99,7 @@ class Game extends React.Component<Props, State> {
 
   componentDidMount() {
     this.createNewGame();
-    const socket = io();
-    console.log(socket);
+    this.socket = io();
   }
 
   createNewGame() {
