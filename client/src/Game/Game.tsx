@@ -95,11 +95,15 @@ class Game extends React.Component<Props, State> {
     this.endTurnHandler = this.endTurnHandler.bind(this);
     this.handleGuess = this.handleGuess.bind(this);
     this.createNewGame = this.createNewGame.bind(this);
+    this.toggleTurn = this.toggleTurn.bind(this);
   }
 
   componentDidMount() {
     this.createNewGame();
     this.socket = io();
+    this.socket.on('endTurn', () => {
+      this.toggleTurn();
+    });
   }
 
   createNewGame() {
@@ -139,11 +143,16 @@ class Game extends React.Component<Props, State> {
     this.setState({ playerType: e.currentTarget.value as PlayerType });
   }
 
-  endTurnHandler(): void {
+  toggleTurn(): void {
     this.setState((prevState) => {
       const turn: Turn = prevState.turn === "red" ? "blue" : "red";
       return { turn };
     });
+  }
+
+  endTurnHandler(): void {
+    this.socket.emit('endTurn');
+    this.toggleTurn();
   }
 
   handleGuess(e: React.MouseEvent<HTMLDivElement>): void {

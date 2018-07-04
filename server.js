@@ -7,7 +7,9 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  socket.on('endTurn', function(data) {
+    socket.broadcast.emit('endTurn');
+  });
 });
 
 http.listen(3001, function(){
