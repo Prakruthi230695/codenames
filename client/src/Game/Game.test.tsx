@@ -205,7 +205,7 @@ it('passes shit to NewGameWidget', () => {
   const ngw = wrapper.find(NewGameWidget);
   const inst = wrapper.instance() as any;
   expect(ngw.props().winner).toBe(wrapper.state().winner);
-  expect(ngw.props().newGameHandler).toBe(inst.createNewGame);
+  expect(ngw.props().newGameHandler).toBe(inst.handleNewGame);
 });
 
 it('displays Paper as top level element', () => {
