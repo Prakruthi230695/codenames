@@ -7,7 +7,7 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-  socket.on('endTurn', function(data) {
+  socket.on('endTurn', function() {
     socket.broadcast.emit('endTurn');
   });
 });
