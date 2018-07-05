@@ -96,6 +96,7 @@ class Game extends React.Component<Props, State> {
     this.handleGuess = this.handleGuess.bind(this);
     this.createNewGame = this.createNewGame.bind(this);
     this.toggleTurn = this.toggleTurn.bind(this);
+    this.onGuess = this.onGuess.bind(this);
   }
 
   componentDidMount() {
@@ -103,6 +104,9 @@ class Game extends React.Component<Props, State> {
     this.socket = io();
     this.socket.on('endTurn', () => {
       this.toggleTurn();
+    });
+    this.socket.on('guess', (word: string) => {
+      this.onGuess(word);
     });
   }
 
@@ -155,8 +159,7 @@ class Game extends React.Component<Props, State> {
     this.toggleTurn();
   }
 
-  handleGuess(e: React.MouseEvent<HTMLDivElement>): void {
-    const word: string = e.currentTarget.textContent as string;
+  onGuess(word: string): void {
     const stateTileGroup: GroupedWord = this.state.groupedWords.filter(gw => gw.word === word)[0];  // The filter should return a single GroupedWord
     const clickedTileGroup: GroupedWord = Object.assign({}, stateTileGroup);  // Clones so that I don't mutate the state.
 
@@ -195,6 +198,13 @@ class Game extends React.Component<Props, State> {
         return { winner, turn, remaining };
       });
     }
+
+  }
+
+  handleGuess(e: React.MouseEvent<HTMLDivElement>): void {
+    const word: string = e.currentTarget.textContent as string;
+    this.onGuess(word);
+    this.socket.emit('guess', word);
   }
 
   render() {

@@ -10,6 +10,9 @@ io.on('connection', function(socket){
   socket.on('endTurn', function() {
     socket.broadcast.emit('endTurn');
   });
+  socket.on('guess', function(word) {
+    socket.broadcast.emit('guess', word);
+  });
 });
 
 http.listen(3001, function(){
