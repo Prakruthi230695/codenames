@@ -109,8 +109,8 @@ class Game extends React.Component<Props, State> {
     this.socket.on('endTurn', () => {
       this.toggleTurn();
     });
-    this.socket.on('guess', (word: string) => {
-      this.onGuess(word);
+    this.socket.on('guess', (groupedWord: GroupedWord) => {
+      this.onGuess(groupedWord);
     });
     this.socket.on('newGame', (groupedWords: GroupedWord[]) => {
       this.restoreDefaultState();
@@ -187,15 +187,7 @@ class Game extends React.Component<Props, State> {
     this.toggleTurn();
   }
 
-  onGuess(word: string): void {
-    const stateTileGroup: GroupedWord = this.state.groupedWords.filter(gw => gw.word === word)[0];  // The filter should return a single GroupedWord
-    const clickedTileGroup: GroupedWord = Object.assign({}, stateTileGroup);  // Clones so that I don't mutate the state.
-
-    if (this.state.playerType === "spymaster" ||
-        clickedTileGroup.guessed ||
-        !!this.state.winner) {
-      return;
-    }
+  onGuess(clickedTileGroup: GroupedWord): void {
     // Need to mark it as guessed no matter what.
     this.setState((prevState) => {
       clickedTileGroup.guessed = true;
@@ -212,7 +204,7 @@ class Game extends React.Component<Props, State> {
         return { winner };
       });
     } else if (clickedTileGroup.group === "neutral") {
-      this.endTurnHandler();  // Just switches whose turn it is.
+      this.toggleTurn();
     } else {
       this.setState((prevState) => {
         let winner: Winner = prevState.winner;
@@ -231,8 +223,17 @@ class Game extends React.Component<Props, State> {
 
   handleGuess(e: React.MouseEvent<HTMLDivElement>): void {
     const word: string = e.currentTarget.textContent as string;
-    this.onGuess(word);
-    this.socket.emit('guess', word);
+    const stateTileGroup: GroupedWord = this.state.groupedWords.filter(gw => gw.word === word)[0];  // The filter should return a single GroupedWord
+    const clickedTileGroup: GroupedWord = Object.assign({}, stateTileGroup);  // Clones so that I don't mutate the state.
+
+    if (this.state.playerType === "spymaster" ||
+        clickedTileGroup.guessed ||
+        !!this.state.winner) {
+      return;
+    }
+    // Don't want to do this stuff until I've checked the above conditions.
+    this.onGuess(clickedTileGroup);
+    this.socket.emit('guess', clickedTileGroup);
   }
 
   render() {

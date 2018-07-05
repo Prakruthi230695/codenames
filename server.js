@@ -10,8 +10,8 @@ io.on('connection', function(socket){
   socket.on('endTurn', function() {
     socket.broadcast.emit('endTurn');
   });
-  socket.on('guess', function(word) {
-    socket.broadcast.emit('guess', word);
+  socket.on('guess', function(groupedWord) {
+    socket.broadcast.emit('guess', groupedWord);
   });
   socket.on('newGame', function(groupedWords) {
     socket.broadcast.emit('newGame', groupedWords);
