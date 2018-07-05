@@ -94,13 +94,17 @@ class Game extends React.Component<Props, State> {
     this.togglePlayerType = this.togglePlayerType.bind(this);
     this.endTurnHandler = this.endTurnHandler.bind(this);
     this.handleGuess = this.handleGuess.bind(this);
+    this.handleNewGame = this.handleNewGame.bind(this);
     this.createNewGame = this.createNewGame.bind(this);
     this.toggleTurn = this.toggleTurn.bind(this);
     this.onGuess = this.onGuess.bind(this);
+    this.restoreDefaultState = this.restoreDefaultState.bind(this);
+    this.generateGroupedWords = this.generateGroupedWords.bind(this);
   }
 
   componentDidMount() {
     this.createNewGame();
+
     this.socket = io();
     this.socket.on('endTurn', () => {
       this.toggleTurn();
@@ -108,9 +112,30 @@ class Game extends React.Component<Props, State> {
     this.socket.on('guess', (word: string) => {
       this.onGuess(word);
     });
+    this.socket.on('newGame', (groupedWords: GroupedWord[]) => {
+      this.restoreDefaultState();
+      this.setState({ groupedWords });
+    });
   }
 
-  createNewGame() {
+  createNewGame(): void {
+    this.restoreDefaultState();
+    this.generateGroupedWords();
+  }
+
+  handleNewGame(): void {
+    this.createNewGame();
+    this.setState(() => {  // Dummy stateChange fn so that I can use the callback feature.
+        return {};
+      },
+      // Callback called after state is updated.
+      () => {
+        this.socket.emit('newGame', this.state.groupedWords);
+      }
+    );
+  }
+
+  restoreDefaultState(): void {
     this.setState({
       playerType: "player",
       turn: "red",
@@ -119,9 +144,12 @@ class Game extends React.Component<Props, State> {
         red: 9,
         blue: 8
       },
+      groupedWords: [],
       playerToggleKey: Math.random()
     });
+  }
 
+  generateGroupedWords(): void {
     shuffle(WORDBANK);
     const gameWords: string[] = WORDBANK.slice(0, 25);
     const groupedWords: GroupedWord[] = [];
@@ -246,7 +274,7 @@ class Game extends React.Component<Props, State> {
           />
           <NewGameWidget
             winner={winner}
-            newGameHandler={this.createNewGame}
+            newGameHandler={this.handleNewGame}
           />
         </div>
       </Paper>
