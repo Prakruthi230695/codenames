@@ -116,6 +116,23 @@ class Game extends React.Component<Props, State> {
       this.restoreDefaultState();
       this.setState({ groupedWords });
     });
+    this.socket.on('needGameData', (newPlayerID: string) => {
+      const gameData: Partial<State> = {
+        turn: this.state.turn,
+        winner: this.state.winner,
+        remaining: this.state.remaining,
+        groupedWords: this.state.groupedWords
+      };
+      this.socket.emit('joiningGame', gameData, newPlayerID);
+    });
+    this.socket.on('joiningGame', (gameData: Partial<State>) => {
+      this.setState({
+        turn: gameData.turn as Turn,
+        winner: gameData.winner as Winner,
+        remaining: gameData.remaining as Remaining,
+        groupedWords: gameData.groupedWords as GroupedWord[]
+      });
+    });
   }
 
   createNewGame(): void {

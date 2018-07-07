@@ -16,6 +16,20 @@ io.on('connection', function(socket){
   socket.on('newGame', function(groupedWords) {
     socket.broadcast.emit('newGame', groupedWords);
   });
+  socket.on('joiningGame', function(gameData, newPlayerID) {
+    socket.to(newPlayerID).emit('joiningGame', gameData);
+  });
+  io.clients((error, clients) => {
+    if (error) {
+      throw error;
+    }
+    if (clients.length === 1) {
+      return;
+    } else {
+      const activePlayerID = clients[0] !== socket.id ? clients[0] : clients[1];
+      socket.to(activePlayerID).emit('needGameData', socket.id);
+    }
+  });
 });
 
 http.listen(3001, function(){
