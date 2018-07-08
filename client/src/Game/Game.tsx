@@ -103,9 +103,8 @@ class Game extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.createNewGame();
-
     this.socket = io();
+
     this.socket.on('endTurn', () => {
       this.toggleTurn();
     });
@@ -116,6 +115,16 @@ class Game extends React.Component<Props, State> {
       this.restoreDefaultState();
       this.setState({ groupedWords });
     });
+    // called only if no other players in the namespace.
+    this.socket.on('createNewGame', () => {
+      this.createNewGame();
+    });
+    /* needGameData and joiningGame are both part of joining a preexisting game.
+     * needGameData responds to a socket.io emit that is triggered upon a new
+     * player connecting to a namespace with a preexisting game.
+     * joiningGame handles the server-side emit that results from the
+     * needGameData emit of joiningGame.
+    */
     this.socket.on('needGameData', (newPlayerID: string) => {
       const gameData: Partial<State> = {
         turn: this.state.turn,

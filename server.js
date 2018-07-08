@@ -24,7 +24,7 @@ io.on('connection', function(socket){
       throw error;
     }
     if (clients.length === 1) {
-      return;
+      socket.emit('createNewGame');
     } else {
       const activePlayerID = clients[0] !== socket.id ? clients[0] : clients[1];
       socket.to(activePlayerID).emit('needGameData', socket.id);
