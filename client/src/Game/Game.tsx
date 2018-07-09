@@ -126,7 +126,7 @@ class Game extends React.Component<Props, State> {
      * needGameData emit of joiningGame.
     */
     this.socket.on('needGameData', (newPlayerID: string) => {
-      const gameData: Partial<State> = {
+      const gameData: Pick<State, 'turn' | 'winner' | 'remaining' | 'groupedWords'> = {
         turn: this.state.turn,
         winner: this.state.winner,
         remaining: this.state.remaining,
@@ -134,12 +134,12 @@ class Game extends React.Component<Props, State> {
       };
       this.socket.emit('joiningGame', gameData, newPlayerID);
     });
-    this.socket.on('joiningGame', (gameData: Partial<State>) => {
+    this.socket.on('joiningGame', (gameData: Pick<State, 'turn' | 'winner' | 'remaining' | 'groupedWords'>) => {
       this.setState({
-        turn: gameData.turn as Turn,
-        winner: gameData.winner as Winner,
-        remaining: gameData.remaining as Remaining,
-        groupedWords: gameData.groupedWords as GroupedWord[]
+        turn: gameData.turn,
+        winner: gameData.winner,
+        remaining: gameData.remaining,
+        groupedWords: gameData.groupedWords
       });
     });
   }
