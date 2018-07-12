@@ -2,6 +2,8 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+var path = require('path');
+
 const STATIC_REL_PATH = 'client/build'
 const PORT = process.env.PORT || 3001;
 const INDEX = path.join(__dirname, STATIC_REL_PATH, 'index.html');
