@@ -2,14 +2,16 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+const STATIC_REL_PATH = 'client/build'
 const PORT = process.env.PORT || 3001;
+const INDEX = path.join(__dirname, STATIC_REL_PATH, 'index.html');
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+  app.use(express.static(STATIC_REL_PATH));
 };
 
 app.get('/', function(req, res){
-  res.send('<h1>Hello world</h1>');
+  res.sendFile(INDEX);
 });
 
 io.on('connection', function(socket){
