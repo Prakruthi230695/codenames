@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-
 const path = require('path');
 
 const STATIC_REL_PATH = 'client/build'
@@ -13,30 +12,39 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(STATIC_REL_PATH));
 };
 
-app.get('/', function(req, res){
+app.get('/*', function(req, res){
   res.sendFile(INDEX);
 });
 
 io.on('connection', function(socket){
+
+  const url = socket.request.headers.referer;
+  // const room = url.split(".com/", 2)[1];
+  // TODO: for testing only!!!!!!!!!!!!!!!!!!!!!
+  const room = url.split("3000", 2)[1];
+  // console.log(room);
+  socket.join(room);
+
   socket.on('endTurn', function() {
-    socket.broadcast.emit('endTurn');
+    socket.to(room).emit('endTurn');
   });
   socket.on('guess', function(groupedWord) {
-    socket.broadcast.emit('guess', groupedWord);
+    socket.to(room).emit('guess', groupedWord);
   });
   socket.on('newGame', function(groupedWords) {
-    socket.broadcast.emit('newGame', groupedWords);
+    socket.to(room).emit('newGame', groupedWords);
   });
   socket.on('joiningGame', function(gameData, newPlayerID) {
     socket.to(newPlayerID).emit('joiningGame', gameData);
   });
 
-  io.clients((error, clients) => {
+  io.in(room).clients((error, clients) => {
+    console.log(clients, socket.id);
     if (error) {
       throw error;
     }
     if (clients.length === 1) {
-      socket.emit('createNewGame');
+      io.in(room).emit('createNewGame');
     } else {
       const activePlayerID = clients[0] !== socket.id ? clients[0] : clients[1];
       socket.to(activePlayerID).emit('needGameData', socket.id);
