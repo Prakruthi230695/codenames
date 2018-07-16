@@ -20,6 +20,7 @@
     "@types/enzyme": "^3.1.10",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/jest": "^22.2.3",
+    "@types/nightmare": "^2.10.4",
     "@types/node": "^10.3.1",
     "@types/react": "^16.3.16",
     "@types/react-dom": "^16.0.6",
@@ -27,6 +28,7 @@
     "@types/socket.io-client": "^1.4.32",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "nightmare": "^3.0.1",
     "react-test-renderer": "^16.4.0",
     "typescript": "^2.9.1"
   }
