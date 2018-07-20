@@ -22,7 +22,7 @@ io.on('connection', function(socket){
   // const room = url.split(".com/", 2)[1];
   // TODO: for testing only!!!!!!!!!!!!!!!!!!!!!
   const room = url.split("3000", 2)[1];
-  // console.log(room);
+  // console.log("room: ", room);
   socket.join(room);
 
   socket.on('endTurn', function() {
@@ -38,8 +38,10 @@ io.on('connection', function(socket){
     socket.to(newPlayerID).emit('joiningGame', gameData);
   });
 
+  // Setting up the game: get current game if joining; make a new one if no one
+  // else in the room yet.
   io.in(room).clients((error, clients) => {
-    console.log(clients, socket.id);
+    // console.log(clients, socket.id);
     if (error) {
       throw error;
     }

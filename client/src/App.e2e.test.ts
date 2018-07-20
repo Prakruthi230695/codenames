@@ -152,3 +152,99 @@ it('propogates the new game board to other players on clicking New Game (socket.
   const bothSame: boolean = word === wordb && wordd === wordc;
   expect(bothSame).toBeFalsy();
 }, 10000);
+
+it('rooms (based on url path) have different boards', async () => {
+  expect.assertions(1);
+
+  const pagea: puppeteer.Page = await browser.newPage();
+  const pageb: puppeteer.Page = await browser.newPage();
+  await pagea.goto('http://127.0.0.1:3000/a');
+  await pageb.goto('http://127.0.0.1:3000/b');
+  await pagea.waitFor('li div div');
+  await pageb.waitFor('li div div');
+
+  const word: string = await pagea.$eval('li div div span', word => word.innerText);
+  const word2: string = await pageb.$eval('li div div span', word => word.innerText);
+  const wordd: string = await pagea.$eval('li:nth-of-type(2) div div span', word => word.innerText);
+  const word2d: string = await pageb.$eval('li:nth-of-type(2) div div span', word => word.innerText);
+
+  const sameWords: boolean = word === word2 && wordd === word2d;
+  expect(sameWords).toBeFalsy();
+});
+
+
+it('rooms (based on url path) have independent End Turn btns', async () => {
+  expect.assertions(2);
+
+  const pagea: puppeteer.Page = await browser.newPage();
+  const pageb: puppeteer.Page = await browser.newPage();
+  await pagea.goto('http://127.0.0.1:3000/a');
+  await pageb.goto('http://127.0.0.1:3000/b');
+  await pagea.waitFor('li div div');
+  await pageb.waitFor('li div div');
+
+
+  const texta: string = await pagea.$eval('h1', x => x.innerText);
+  const textb: string = await pageb.$eval('h1', x => x.innerText);
+  expect(texta).toBe(textb);
+
+  await pagea.click('button');
+  pagea.waitFor(1000);
+
+  const texta2: string = await pagea.$eval('h1', x => x.innerText);
+  const textb2: string = await pageb.$eval('h1', x => x.innerText);
+  expect(texta2).not.toBe(textb2);
+});
+
+it('rooms have independent guessing', async () => {
+  expect.assertions(2);
+
+  const pagea: puppeteer.Page = await browser.newPage();
+  const pageb: puppeteer.Page = await browser.newPage();
+  await pagea.goto('http://127.0.0.1:3000/a');
+  await pageb.goto('http://127.0.0.1:3000/b');
+  await pagea.waitFor('li div div');
+  await pageb.waitFor('li div div');
+
+  const bgColora: string = await pagea.$eval('li div div', tile => {
+    return window.getComputedStyle(tile).getPropertyValue('background-color');
+  });
+  const bgColorb: string = await pageb.$eval('li div div', tile => {
+    return window.getComputedStyle(tile).getPropertyValue('background-color');
+  });
+  expect(bgColora).toBe(bgColorb);
+
+  await pagea.click('li div div');
+  pagea.waitFor(1000);
+
+  const bgColora2: string = await pagea.$eval('li div div', tile => {
+    return window.getComputedStyle(tile).getPropertyValue('background-color');
+  });
+  const bgColorb2: string = await pageb.$eval('li div div', tile => {
+    return window.getComputedStyle(tile).getPropertyValue('background-color');
+  });
+  expect(bgColora2).not.toBe(bgColorb2);
+});
+
+it('rooms have independent New Game calls', async () => {
+  expect.assertions(1);
+
+  const pagea: puppeteer.Page = await browser.newPage();
+  const pageb: puppeteer.Page = await browser.newPage();
+  await pagea.goto('http://127.0.0.1:3000/a');
+  await pageb.goto('http://127.0.0.1:3000/b');
+  await pagea.waitFor('li div div');
+  await pageb.waitFor('li div div');
+
+  await pagea.click('fieldset + button');  // New Game button selector;
+  await pagea.click('div[role="dialog"] button:last-of-type');  // Confirm dialog.
+  await pagea.waitFor(2000);  // Need new data, but can't do wd === wd2 observer b/c no guarantee they're diff.
+
+  const worda: string = await pagea.$eval('li div div span', word => word.innerText);
+  const worda2: string = await pageb.$eval('li div div span', word => word.innerText);
+  const wordb: string = await pagea.$eval('li:nth-of-type(2) div div span', word => word.innerText);
+  const wordb2: string = await pageb.$eval('li:nth-of-type(2) div div span', word => word.innerText);
+
+  const wordsSame: boolean = worda === wordb && worda2 === wordb2;
+  expect(wordsSame).toBeFalsy();
+});
