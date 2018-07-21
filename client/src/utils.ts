@@ -4,6 +4,13 @@ function shuffle<T>(array: T[]): void {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
+};
+
+/** Determines if the window's pathname is root path (e.g. https://www.example.com/)
+ */
+function isRootUrlPath(): boolean {
+  return window.location.pathname === "/";
 }
 
 export { shuffle };
+export { isRootUrlPath };
