@@ -20,6 +20,7 @@ import { GRID_WIDTH } from '../GameGrid/GameGrid';
 
 
 const PADDING: number = 20;
+export const TOTAL_WIDTH = GRID_WIDTH + (2 * PADDING)
 
 const styles = createStyles({
   root: {
@@ -28,7 +29,7 @@ const styles = createStyles({
     padding: PADDING,
     margin: "20px auto 20px",
     width: "100%",
-    maxWidth: (GRID_WIDTH + PADDING * 2)
+    maxWidth: TOTAL_WIDTH
   },
   aboveGrid: {
     marginBottom: 12,
