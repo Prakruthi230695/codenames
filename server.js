@@ -3,6 +3,7 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const path = require('path');
+const url = require('url');
 
 const STATIC_REL_PATH = 'client/build'
 const PORT = process.env.PORT || 3001;
@@ -17,10 +18,8 @@ app.get('/*', function(req, res){
 });
 
 io.on('connection', function(socket){
-
-  const url = socket.request.headers.referer;
-  const room = url.split(".com", 2)[1];
-  // const room = url.split("3000", 2)[1];
+  const roomUrl = new url.URL(socket.request.headers.referer);
+  const room = roomUrl.pathname;
   socket.join(room);
 
   socket.on('endTurn', function() {

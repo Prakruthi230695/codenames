@@ -15,8 +15,8 @@ it('End Turn button changes turn across players\'s screens (socket.on(endTurn))'
 
   const page: puppeteer.Page = await browser.newPage();
   const page2: puppeteer.Page = await browser.newPage();
-  await page.goto('http://127.0.0.1:3000');
-  await page2.goto('http://127.0.0.1:3000');
+  await page.goto('http://127.0.0.1:3000/a');
+  await page2.goto('http://127.0.0.1:3000/a');
   await page.waitFor('li div div');
   await page2.waitFor('li div div');
 
@@ -37,7 +37,7 @@ it('End Turn button changes turn across players\'s screens (socket.on(endTurn))'
 
 it('loads up a new game for the first player (socket.on(createNewGame))', async () => {
   const page: puppeteer.Page = await browser.newPage();
-  await page.goto('http://127.0.0.1:3000');
+  await page.goto('http://127.0.0.1:3000/a');
   await page.waitFor('li div div');  // Test failure indicated by a timeout here.
 });
 
@@ -46,8 +46,8 @@ it('clicking an unguessed tile changes its color. Repeat clicks to nothing (sock
 
   const page: puppeteer.Page = await browser.newPage();
   const page2: puppeteer.Page = await browser.newPage();
-  await page.goto('http://127.0.0.1:3000');
-  await page2.goto('http://127.0.0.1:3000');
+  await page.goto('http://127.0.0.1:3000/a');
+  await page2.goto('http://127.0.0.1:3000/a');
   await page.waitFor('li div div');
   await page2.waitFor('li div div');
 
@@ -92,7 +92,7 @@ it('a new player\'s game matches the preexisting players\' (socket.on(joiningGam
 
   const page: puppeteer.Page = await browser.newPage();
   const page2: puppeteer.Page = await browser.newPage();
-  await page.goto('http://127.0.0.1:3000');
+  await page.goto('http://127.0.0.1:3000/a');
   await page.waitFor('li div div');
   await page.click('li div div');
 
@@ -101,7 +101,7 @@ it('a new player\'s game matches the preexisting players\' (socket.on(joiningGam
     return window.getComputedStyle(tile).getPropertyValue('background-color');
   });
 
-  await page2.goto('http://127.0.0.1:3000');
+  await page2.goto('http://127.0.0.1:3000/a');
   await page2.waitFor('li div div');
 
   const word: string = await page.$eval('li div div span', word => word.innerText);
@@ -126,8 +126,8 @@ it('propogates the new game board to other players on clicking New Game (socket.
 
   const page: puppeteer.Page = await browser.newPage();
   const page2: puppeteer.Page = await browser.newPage();
-  await page.goto('http://127.0.0.1:3000');
-  await page2.goto('http://127.0.0.1:3000');
+  await page.goto('http://127.0.0.1:3000/a');
+  await page2.goto('http://127.0.0.1:3000/a');
   await page.waitFor('li div div');
   await page2.waitFor('li div div');
 
