@@ -13,14 +13,8 @@ const styles = createStyles({
   root: {
     margin: "20px auto 20px",
     width: "100%",
+    padding: 20,
     maxWidth: TOTAL_WIDTH,
-  },
-  bottomPadding: {
-    paddingBottom: 5,
-  },
-  sidePadding: {
-    paddingLeft: 20,
-    paddingRight: 20,
   },
 });
 
@@ -30,43 +24,40 @@ const LandingPage: React.SFC<Props> = (props: Props) => {
   const { classes } = props;
 
   return (
-  <Paper className={classes.root}>
-      <Typography
-        variant={"display1"}
-        align={"center"}
-        color={"secondary"}
-        gutterBottom
-      >
-        {"Welcome to Codenames!"}
-      </Typography>
-      <Typography
-        className={classes.sidePadding}
-        variant={"headline"}
-        align={"center"}
-        gutterBottom
-      >
-        {`Navigate to any path (the part after \".com/\") to set-up a game,
-          and share the link with your friends!
-        `}
-      </Typography>
-      <Typography
-        variant={"caption"}
-        align={"center"}
-      >
-        {"Examples:"}
-      </Typography>
-      <Typography
-        align={"center"}
-      >
-        {window.location.host + "/marzipan"}
-      </Typography>
-      <Typography
-        align={"center"}
-        className={classes.bottomPadding}
-      >
-        {window.location.host + "/tsarbomba"}
-      </Typography>
-
+    <Paper className={classes.root}>
+        <Typography
+          variant={"display1"}
+          align={"center"}
+          color={"secondary"}
+          gutterBottom
+        >
+          {"Welcome to Codenames!"}
+        </Typography>
+        <Typography
+          variant={"headline"}
+          align={"center"}
+          gutterBottom
+        >
+          {`Navigate to any path (the part after \".com/\") to set-up a game,
+            and share the link with your friends!
+          `}
+        </Typography>
+        <Typography
+          variant={"caption"}
+          align={"center"}
+        >
+          {"Examples:"}
+        </Typography>
+        <Typography
+          align={"center"}
+        >
+          {window.location.host + "/marzipan"}
+        </Typography>
+        <Typography
+          align={"center"}
+        >
+          {window.location.host + "/tsarbomba"}
+        </Typography>
     </Paper>
   )
 }
