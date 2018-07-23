@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -11,6 +12,7 @@ const INDEX = path.join(__dirname, STATIC_REL_PATH, 'index.html');
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(STATIC_REL_PATH));
+  app.use(compression());
 };
 
 app.get('/*', function(req, res){

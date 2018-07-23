@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/swpease/codenames#readme",
   "dependencies": {
+    "compression": "^1.7.3",
     "express": "^4.16.3",
     "socket.io": "^2.1.1"
   },
